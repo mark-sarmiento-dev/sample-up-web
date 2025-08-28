@@ -7,11 +7,20 @@
         "dev": "vite"
     },
     "devDependencies": {
-        "@tailwindcss/vite": "^4.0.0",
+        "@popperjs/core": "^2.11.6",
+        "@vitejs/plugin-vue": "^4.6.2",
+        "autoprefixer": "^10.4.0",
         "axios": "^1.11.0",
-        "concurrently": "^9.0.1",
-        "laravel-vite-plugin": "^2.0.0",
-        "tailwindcss": "^4.0.0",
-        "vite": "^7.0.4"
+        "bootstrap": "^5.2.3",
+        "concurrently": "^7.6.0",
+        "laravel-vite-plugin": "^0.8.0",
+        "postcss": "^8.4.0",
+        "sass": "^1.56.1",
+        "tailwindcss": "^3.3.0",
+        "vite": "^4.5.0",
+        "vue": "^3.5.20"
+    },
+    "dependencies": {
+        "@inertiajs/vue3": "^2.1.3"
     }
 }
