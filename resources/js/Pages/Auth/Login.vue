@@ -42,15 +42,10 @@
             required
             autocomplete="current-password"
           />
-          <button
-            type="button"
-            class="toggle-password"
-            @click="togglePassword"
-            :aria-label="showPassword ? 'Hide password' : 'Show password'"
-          >
-            <i v-if="showPassword" class="fa fa-eye-slash"></i>
-            <i v-else class="fa fa-eye"></i>
-          </button>
+          <span class="toggle-password" @click="togglePassword">
+            <img src="images/icons/hide-pass.png" v-if="!showPassword" />
+            <img src="images/icons/show-pass.png" v-else />
+          </span>
         </div>
 
         <div class="forgot-password">
@@ -76,8 +71,9 @@ const form = useForm({
 });
 
 const showPassword = ref(false);
+
 const togglePassword = () => {
-  showPassword.value = !showPassword.value;
+    showPassword.value = !showPassword.value;
 };
 
 const submit = () => {
@@ -86,30 +82,3 @@ const submit = () => {
   });
 };
 </script>
-
-<style scoped>
-.password-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.password-wrapper input {
-  width: 100%;
-  padding-right: 40px; /* space for eye icon */
-}
-
-.password-wrapper .toggle-password {
-  position: absolute;
-  right: 10px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #555;
-  font-size: 16px;
-}
-
-.password-wrapper .toggle-password:hover {
-  color: #007bff;
-}
-</style>

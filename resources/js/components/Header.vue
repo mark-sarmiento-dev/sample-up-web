@@ -12,14 +12,12 @@
 
     <div
       class="user-dropdown"
-      :class="{ active: isDropdownOpen }"
-      ref="dropdownWrapper"
     >
-      <div class="user" @click="toggleDropdown" ref="userDiv">
+      <div class="user" ref="userDiv">
         <span>Hello, {{ user?.name }}</span>
         <img src="images/profile.webp" alt="User Avatar" />
       </div>
-      <div class="dropdown-menu" v-if="isDropdownOpen">
+      <div class="dropdown-menu">
         <a href="#">Account Settings</a>
         <a href="#">Account Management</a>
         <a href="#" @click.prevent="logout">Logout</a>
@@ -29,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed } from "vue";
+import { computed } from "vue";
 import axios from "axios";
 import { usePage } from "@inertiajs/vue3";
 
@@ -37,36 +35,11 @@ import { usePage } from "@inertiajs/vue3";
 const page = usePage();
 const user = computed(() => page.props.auth?.user ?? null);
 
-// Dropdown state
-const isDropdownOpen = ref(false);
-
-// Emit event to parent
 const emit = defineEmits(["toggle-sidebar"]);
-
-function toggleDropdown() {
-  isDropdownOpen.value = !isDropdownOpen.value;
-}
 
 function toggleSidebar() {
   emit("toggle-sidebar");
 }
-
-// Refs for dropdown
-const dropdownWrapper = ref(null);
-
-function handleClickOutside(e) {
-  if (dropdownWrapper.value && !dropdownWrapper.value.contains(e.target)) {
-    isDropdownOpen.value = false;
-  }
-}
-
-onMounted(() => {
-  document.addEventListener("click", handleClickOutside);
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener("click", handleClickOutside);
-});
 
 async function logout() {
   try {
