@@ -21,6 +21,7 @@
         "vue": "^3.5.20"
     },
     "dependencies": {
+        "@heroicons/vue": "^2.2.0",
         "@inertiajs/vue3": "^2.1.3"
     }
 }
