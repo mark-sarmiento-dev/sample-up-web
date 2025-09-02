@@ -10,16 +10,12 @@ class HandleInertiaRequests extends Middleware
     /**
      * The root template that's loaded on the first page visit.
      *
-     * @see https://inertiajs.com/server-side-setup#root-template
-     *
      * @var string
      */
     protected $rootView = 'app';
 
     /**
      * Determines the current asset version.
-     *
-     * @see https://inertiajs.com/asset-versioning
      */
     public function version(Request $request): ?string
     {
@@ -29,15 +25,26 @@ class HandleInertiaRequests extends Middleware
     /**
      * Define the props that are shared by default.
      *
-     * @see https://inertiajs.com/shared-data
-     *
      * @return array<string, mixed>
      */
     public function share(Request $request): array
     {
-        return [
-            ...parent::share($request),
-            //
-        ];
+        dd($request->user());
+        return array_merge(parent::share($request), [
+            'auth' => [
+                'user' => $request->user() ? [
+                    'id'      => $request->user()->id,
+                    'name'    => $request->user()->name,
+                    'gsis_id' => $request->user()->gsis_id,
+                    'email'   => $request->user()->email, // useful for notifications or profile
+                    // Add only safe-to-share fields
+                ] : null,
+            ],
+            // You can also add global flash messages
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error'   => fn () => $request->session()->get('error'),
+            ],
+        ]);
     }
 }
