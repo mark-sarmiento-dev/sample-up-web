@@ -119,6 +119,27 @@ main.login-container .error-message {
   text-align: center;
   font-weight: bold;
 }
+main.login-container .password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+main.login-container .password-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* space for the toggle button */
+}
+main.login-container .toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 60%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+main.login-container .toggle-password img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
 
 /* Responsive for mobile */
 @media (max-width: 768px) {

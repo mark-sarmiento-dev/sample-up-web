@@ -118,7 +118,33 @@ main.login-container {
 		text-align:center;
 		font-weight:bold;
 	}
-}/* Responsive for mobile */
+	.password-wrapper {
+		position: relative;
+		display: flex;
+		align-items: center;
+	}
+	
+	.password-wrapper input {
+		width: 100%;
+		padding-right: 40px; /* space for the toggle button */
+	}
+	
+	.toggle-password {
+		position: absolute;
+		right: 10px;
+		top: 60%;
+		transform: translateY(-50%);
+		cursor: pointer;
+	}
+	
+	.toggle-password img {
+		width: 20px;
+		height: 20px;
+		object-fit: contain;
+	}
+}
+
+/* Responsive for mobile */
 @media (max-width:768px) {
 		main.login-container {
 		flex-direction:column;
