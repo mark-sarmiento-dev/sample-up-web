@@ -1,53 +1,79 @@
 <template>
-    <header class="header">
-        <button class="menu-btn" @click="toggleSidebar">☰</button>
-        <div class="logo">
-            <img src="images/logo.png" alt="Logo" />
-            <div class="logo-text">
-                <strong>HRMS</strong>
-                <small>LGU LIBACAO</small>
-            </div>
-        </div>
+  <header class="header">
+    <button class="menu-btn" @click="toggleSidebar">☰</button>
 
-        <!-- User profile with dropdown -->
-        <div class="user-dropdown" :class="{ active: isDropdownOpen }">
-            <div class="user" @click="toggleDropdown">
-                <span>Hello, Joe</span>
-                <img src="images/profile.webp" alt="User Avatar" />
-            </div>
-            <div class="dropdown-menu">
-                <a href="#">Account Settings</a>
-                <a href="#">Account Management</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
-    </header>
+    <div class="logo">
+      <img src="images/logo.png" alt="Logo" />
+      <div class="logo-text">
+        <strong>HRMS</strong>
+        <small>LGU LIBACAO</small>
+      </div>
+    </div>
+
+    <div
+      class="user-dropdown"
+      :class="{ active: isDropdownOpen }"
+      ref="dropdownWrapper"
+    >
+      <div class="user" @click="toggleDropdown" ref="userDiv">
+        <span>Hello, {{ user?.name }}</span>
+        <img src="images/profile.webp" alt="User Avatar" />
+      </div>
+      <div class="dropdown-menu" v-if="isDropdownOpen">
+        <a href="#">Account Settings</a>
+        <a href="#">Account Management</a>
+        <a href="#" @click.prevent="logout">Logout</a>
+      </div>
+    </div>
+  </header>
 </template>
+
 <script setup>
-    import { ref, onMounted } from "vue";
-    
-    // User dropdown
-    const isDropdownOpen = ref(false);
-    const emit = defineEmits(["toggle-sidebar"]);
+import { ref, onMounted, onBeforeUnmount, computed } from "vue";
+import axios from "axios";
+import { usePage } from "@inertiajs/vue3";
 
-    function toggleDropdown() {
-        isDropdownOpen.value = !isDropdownOpen.value;
-    }
+// Correctly read reactive user from Inertia props
+const page = usePage();
+const user = computed(() => page.props.auth?.user ?? null);
 
-    // Emit event to parent when menu button clicked
-    function toggleSidebar() {
-        // emit event
-        emit("toggle-sidebar");
-    }
+// Dropdown state
+const isDropdownOpen = ref(false);
 
-    // Close dropdown when clicking outside
-    onMounted(() => {
-        document.addEventListener("click", (e) => {
-            const userDiv = document.querySelector(".user-dropdown .user");
-            const dropdown = document.querySelector(".dropdown-menu");
-            if (!userDiv.contains(e.target) && !dropdown.contains(e.target)) {
-                isDropdownOpen.value = false;
-            }
-        });
-    });
+// Emit event to parent
+const emit = defineEmits(["toggle-sidebar"]);
+
+function toggleDropdown() {
+  isDropdownOpen.value = !isDropdownOpen.value;
+}
+
+function toggleSidebar() {
+  emit("toggle-sidebar");
+}
+
+// Refs for dropdown
+const dropdownWrapper = ref(null);
+
+function handleClickOutside(e) {
+  if (dropdownWrapper.value && !dropdownWrapper.value.contains(e.target)) {
+    isDropdownOpen.value = false;
+  }
+}
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
+
+async function logout() {
+  try {
+    await axios.post("/logout");
+    window.location.href = "/login";
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+}
 </script>
