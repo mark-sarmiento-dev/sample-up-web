@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Middleware\DepartmentAccess;
 
+Route::get('/playground', fn() => Inertia::render('Playground'))->name('playground');
+
 Route::get('/', fn() => redirect()->route('login'))->name('home');
 
 Route::get('/login', fn() => Inertia::render('Auth/Login'))->name('login');
