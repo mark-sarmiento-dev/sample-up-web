@@ -130,6 +130,27 @@ main.login-container .error-message {
   text-align: center;
   font-weight: bold;
 }
+main.login-container .password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+main.login-container .password-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* space for the toggle button */
+}
+main.login-container .toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 60%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+main.login-container .toggle-password img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
 
 /* Responsive for mobile */
 @media (max-width: 768px) {
@@ -188,10 +209,6 @@ main.login-container .error-message {
   overflow-y: auto;
 }
 
-.tab-content {
-  display: none;
-}
-
 .tab-content.active {
   display: block;
 }
@@ -245,18 +262,6 @@ main.login-container .error-message {
     grid-template-rows: 60px auto;
     grid-template-areas: "header" "main";
   }
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100%;
-    transform: translateX(-100%);
-    z-index: 1000;
-  }
-  .sidebar.open {
-    transform: translateX(0);
-  }
   .menu-btn {
     display: block;
   }
@@ -302,12 +307,6 @@ main.login-container .error-message {
   padding: 5px;
 }
 
-/* desktop view always visible */
-@media (min-width: 768px) {
-  .sidebar {
-    transform: translateX(0);
-  }
-}
 /* Header */
 .header {
   grid-area: header;
@@ -317,6 +316,7 @@ main.login-container .error-message {
   justify-content: space-between;
   padding: 0 20px;
   border-bottom: 1px solid #ddd;
+  position: relative;
 }
 
 .header .user {
@@ -325,6 +325,8 @@ main.login-container .error-message {
   gap: 10px;
   font-size: 14px;
   color: #333;
+  cursor: pointer;
+  position: relative;
 }
 
 .header .user img {
@@ -360,6 +362,46 @@ main.login-container .error-message {
 .header .logo-text small {
   font-size: 12px;
   opacity: 0.9;
+}
+
+/* Dropdown */
+.user-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: #fff;
+  border: 1px solid #ddd;
+  min-width: 180px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 8px 5px;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f0f0f0;
+}
+
+/* Hover effect */
+.user-dropdown:hover .dropdown-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Sidebar */
@@ -406,4 +448,121 @@ main.login-container .error-message {
 /* show when open */
 .sidebar.open {
   transform: translateX(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    transform: translateX(-100%);
+    z-index: 1000;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
+/* desktop view always visible */
+@media (min-width: 768px) {
+  .sidebar {
+    transform: translateX(0);
+  }
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 999;
+}
+
+/* Default modal */
+.modal-content {
+  background: #fff;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Sizes */
+.modal-sm {
+  max-width: 400px;
+}
+
+.modal-md {
+  max-width: 800px;
+}
+
+.modal-lg {
+  max-width: 1000px;
+}
+
+.modal-full {
+  max-width: 100%;
+  width: 100%;
+  height: 100vh;
+  border-radius: 0;
+}
+
+.modal-header {
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #5B5B5B;
+}
+
+.close {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.modal-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  border-top: 1px solid #ddd;
+  padding: 15px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn.cancel {
+  background: #eee;
+}
+
+.btn.next {
+  background: #333;
+  color: #fff;
 }/*# sourceMappingURL=app.css.map */
