@@ -33,9 +33,56 @@
             </section>
 
             <!-- Employee Tab -->
-            <section v-show="activeTab === 'employee'" class="tab-content">
-                <p>Employee Management content goes here.</p>
+            <section v-show="activeTab === 'employee'" id="employee">
+                <div class="employee-header">
+                    <input type="text" placeholder="Search employee ..." class="search-bar" />
+                    <button class="add-btn">
+                        <img class="icon" src="images/icons/plus.png"/> Add Employee
+                    </button>
+                </div>
+                <div class="employee-table-wrapper">
+                    <table class="employee-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Date of Birth</th>
+                                <th>Agency Employee No.</th>
+                                <th>Sex</th>
+                                <th>Civil Status</th>
+                                <th>Citizenship</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>03/24/2001</td>
+                                <td>EMP-001234</td>
+                                <td>Male</td>
+                                <td>Single</td>
+                                <td>Filipino</td>
+                                <td>
+                                    <button class="action-btn">
+                                        <img class="icon" src="images/icons/view.png"/>
+                                    </button>
+                                    <button class="action-btn">
+                                        <img class="icon" src="images/icons/edit.png"/>
+                                    </button>
+                                    <button class="action-btn">
+                                        <img class="icon" src="images/icons/delete.png"/>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <button>&laquo;</button>
+                    <span>Page 22</span>
+                    <button>&raquo;</button>
+                </div>
             </section>
+
 
             <!-- Plantilla Tab -->
             <section v-show="activeTab === 'plantilla'" class="tab-content">
