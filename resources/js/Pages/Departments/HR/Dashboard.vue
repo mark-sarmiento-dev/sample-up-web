@@ -126,6 +126,7 @@
     import { ref, computed } from "vue";
     import Header from '@/Components/Header.vue';
     import Sidebar from '@/Components/Sidebar.vue';
+    import Button from "@/components/Button.vue";
 
 
     // Sidebar tabs
