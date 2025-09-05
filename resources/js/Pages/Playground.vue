@@ -3,21 +3,34 @@
         <h1>Playground</h1>
         <div class="playground-content">
             <h3>Modals</h3>
-            <button class="btn" @click="showModal = true">Open Small Modal</button>
 
-            <Modal v-model="showModal" title="Small Modal" size="sm">
-                <p>This is a small modal.</p>
-            </Modal>
+            <!-- Button to open modal -->
+            <button class="btn" @click="pdsFormModal.showModal = true">
+                Open Small Modal
+            </button>
+
+            <Button @click="save">Save</Button>
+            <Button variant="secondary" size="sm">Cancel</Button>
+            <Button variant="danger" size="lg">Delete</Button>
+
+            <!-- Use the PDSFormModal -->
+            <PDSFormModal ref="pdsFormModal" />
         </div>
     </div>
 </template>
+
 <script setup>
-import { ref } from "vue";
+    import { ref } from "vue";
+    import PDSFormModal from "@/Components/Modals/PDSFormModal.vue";
+    import Button from "@/components/Button.vue";
 
-import Modal from "@/Components/Modal.vue"
+    const pdsFormModal = ref(null);
 
-const showModal = ref(false);
+    const save = () => {
+        console.log('Save button clicked');
+    };
 </script>
+
 <style scoped>
     .playground-container {
         margin: 40px;
@@ -25,17 +38,5 @@ const showModal = ref(false);
 
     .playground-content {
         margin-top: 40px;
-    }
-
-    .btn {
-        padding:12px;
-		margin-top:20px;
-		background-color:#5B5B5B;
-		/* Theme color */
-		border:none;
-		color:white;
-		font-size:16px;
-		cursor:pointer;
-		border-radius:0;
     }
 </style>
