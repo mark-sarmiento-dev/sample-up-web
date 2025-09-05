@@ -1,11 +1,23 @@
-@use 'login';
-@use 'dashboard';
-@use 'header';
-@use 'sidebar';
-@use 'modal';
-@use 'button';
-@use 'hr/employee-tab';
-@use 'modals/pdsformmodal';
+@use 'components/componentModal';
+@use 'components/componentButton';
+
+@use 'layouts/layoutEmployeeTab';
+@use 'layouts/layoutPDSFormModal';
+@use 'layouts/layoutLogin';
+@use 'layouts/layoutDashboard';
+@use 'layouts/layoutHeader';
+@use 'layouts/layoutSidebar';
+
+:root {
+    --color-primary: #5b5b5b;
+    --color-primary-hover: #4a4a4a;
+  
+    --color-secondary: #eaeaea;
+    --color-secondary-hover: #d6d6d6;
+  
+    --color-white: #ffffff;
+    --color-black: #000000;
+}
 
 * {
     margin: 0;
@@ -16,4 +28,8 @@
 
 html, body {
     height: 100%;
+
+    .modal-open {
+        overflow: hidden;
+    }
 }

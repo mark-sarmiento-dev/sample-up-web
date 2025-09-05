@@ -36,9 +36,9 @@
             <section v-show="activeTab === 'employee'" id="employee">
                 <div class="employee-header">
                     <input type="text" placeholder="Search employee ..." class="search-bar" />
-                    <button class="add-btn">
+                    <Button variant="primary">
                         <img class="icon" src="images/icons/plus.png"/> Add Employee
-                    </button>
+                    </Button>
                 </div>
                 <div class="employee-table-wrapper">
                     <table class="employee-table">
@@ -62,25 +62,25 @@
                                 <td>Single</td>
                                 <td>Filipino</td>
                                 <td>
-                                    <button class="action-btn">
+                                    <Button variant="secondary" size="xs">
                                         <img class="icon" src="images/icons/view.png"/>
-                                    </button>
-                                    <button class="action-btn">
+                                    </Button>
+                                    <Button variant="secondary" size="xs">
                                         <img class="icon" src="images/icons/edit.png"/>
-                                    </button>
-                                    <button class="action-btn">
+                                    </Button>
+                                    <Button variant="secondary" size="xs">
                                         <img class="icon" src="images/icons/delete.png"/>
-                                    </button>
+                                    </Button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="pagination">
+                <!-- <div class="pagination">
                     <button>&laquo;</button>
                     <span>Page 22</span>
                     <button>&raquo;</button>
-                </div>
+                </div> -->
             </section>
 
 
@@ -124,9 +124,9 @@
 
 <script setup>
     import { ref, computed } from "vue";
-    import Header from '@/Components/Header.vue';
-    import Sidebar from '@/Components/Sidebar.vue';
-    import Button from "@/components/Button.vue";
+    import Header from '@/components/Header/Header.vue';
+    import Sidebar from '@/components/Sidebar/Sidebar.vue';
+    import Button from "@/components/Common/Button.vue";
 
 
     // Sidebar tabs

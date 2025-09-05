@@ -23,6 +23,10 @@
   flex-direction: column;
   overflow: hidden;
 }
+.modal-content .icon {
+  width: 12px;
+  height: 12px;
+}
 
 /* Sizes */
 .modal-sm {

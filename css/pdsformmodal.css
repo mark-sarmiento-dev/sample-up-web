@@ -2,6 +2,7 @@
 .modal-body {
   /* Sidebar / Navigation */
   /* Form Section */
+  /* Input / Select / Date styles */
   /* ✅ Responsive - Mobile */
 }
 .modal-body .pds-form {
@@ -29,40 +30,63 @@
 .modal-body .pds-nav li {
   padding: 10px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
 }
-.modal-body .pds-nav li:hover,
-.modal-body .pds-nav li.active {
+.modal-body .pds-nav li:hover, .modal-body .pds-nav li.active {
   background: #eaeaea;
   color: #333;
+  font-weight: bold;
 }
 .modal-body .form-section {
   flex: 1;
   overflow-y: auto;
   padding-left: 20px;
+  padding-right: 30px;
 }
 .modal-body .form-section h3 {
   margin-bottom: 10px;
   color: #555;
 }
-.modal-body .form-grid {
+.modal-body .form-section .input-wrapper.span-2 {
+  grid-column: span 2;
+}
+.modal-body .form-section .input-wrapper.span-3 {
+  grid-column: span 3;
+}
+.modal-body .form-grid .personal-info,
+.modal-body .form-grid .govt-info,
+.modal-body .form-grid .contact-address-info {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
   gap: 16px;
+  margin-bottom: 40px;
 }
 .modal-body label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   margin-bottom: 4px;
   display: block;
-  color: #555;
+  color: #898989;
 }
-.modal-body input {
+.modal-body input,
+.modal-body select {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
   font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.modal-body input:focus,
+.modal-body select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+.modal-body input[type=date] {
+  /* optional: consistent appearance for date inputs */
 }
 @media (max-width: 768px) {
   .modal-body .pds-form {

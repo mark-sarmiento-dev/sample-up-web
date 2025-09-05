@@ -67,7 +67,7 @@
 <script setup>
     import { ref } from "vue";
     import { useForm } from "@inertiajs/vue3";
-    import Button from "@/components/Button.vue";
+import Button from "@/components/Common/Button.vue";
 
     const form = useForm({
         gsis_id: "",
