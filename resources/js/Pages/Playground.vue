@@ -3,15 +3,19 @@
         <h1>Playground</h1>
         <div class="playground-content">
             <h3>Modals</h3>
+            <div class="components-wrapper">
+                <Button variant="secondary" size="md" @click="pdsFormModal.showModal = true">
+                    Open Small Modal
+                </Button>
+            </div>
 
-            <!-- Button to open modal -->
-            <button class="btn" @click="pdsFormModal.showModal = true">
-                Open Small Modal
-            </button>
-
-            <Button @click="save">Save</Button>
-            <Button variant="secondary" size="sm">Cancel</Button>
-            <Button variant="danger" size="lg">Delete</Button>
+            <h3>Buttons</h3>
+            <div class="components-wrapper">
+                <Button variant="secondary" size="lg">Button Large</Button>
+                <Button variant="secondary" size="md">Button Medium</Button>
+                <Button variant="secondary" size="sm">Button Small</Button>
+                <Button variant="secondary" size="xs">Button X-Small</Button>
+            </div>
 
             <!-- Use the PDSFormModal -->
             <PDSFormModal ref="pdsFormModal" />
@@ -20,23 +24,32 @@
 </template>
 
 <script setup>
-    import { ref } from "vue";
-    import PDSFormModal from "@/Components/Modals/PDSFormModal.vue";
-    import Button from "@/components/Button.vue";
+import { ref } from "vue";
+import PDSFormModal from "@/components/PDSForm/PDSFormModal.vue";
+import Button from "@/components/Common/Button.vue";
 
-    const pdsFormModal = ref(null);
+const pdsFormModal = ref(null);
 
-    const save = () => {
-        console.log('Save button clicked');
-    };
+const save = () => {
+    console.log("Save button clicked");
+};
 </script>
 
 <style scoped>
-    .playground-container {
-        margin: 40px;
-    }
+.playground-container {
+    margin: 40px;
+}
 
-    .playground-content {
-        margin-top: 40px;
-    }
+.playground-content {
+    margin-top: 40px;
+}
+
+/* 🔽 Stack buttons vertically */
+.components-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* spacing between buttons */
+    max-width: 200px; /* optional: limit width */
+    margin-bottom: 20px;
+}
 </style>

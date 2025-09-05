@@ -8,7 +8,7 @@
         width: 11px;
 	    height: 11px;
         margin-right: 2px;
-        color: #fff;
+        filter: brightness(0) invert(1);
     }
   }
   
@@ -65,10 +65,13 @@
 
   .employee-table .icon {
     width: 22px;
-	height: 22px;
-	object-fit: contain;
-    border: 1px solid #6e6d6d;
+	  height: 22px;
+	  object-fit: contain;
     padding: 2px;
+  }
+
+  .employee-table button {
+    margin-right: 4px;
   }
   
   .action-btn {

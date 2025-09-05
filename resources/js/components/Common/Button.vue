@@ -27,6 +27,7 @@
   
   const sizeClass = computed(() => {
     switch (props.size) {
+      case "xs": return "btn-xs"
       case "sm": return "btn-sm"
       case "lg": return "btn-lg"
       default: return "btn-md"
