@@ -1,6 +1,4 @@
-@charset "UTF-8";
-.modal {
-  position: fixed;
+/*# sourceMappingURL=app.css.map */on: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -279,7 +277,10 @@ input:focus {
 .modal-body {
   /* Sidebar / Navigation */
   /* Form Section */
-  /* Input / Select / Date styles */
+  /* Shared Grid Styles */
+  /* Inclusive Dates */
+  /* Other Form Specific */
+  /* Family Form */
   /* ✅ Responsive - Mobile */
 }
 .modal-body .pds-form {
@@ -325,19 +326,105 @@ input:focus {
   margin-bottom: 10px;
   color: #555;
 }
+.modal-body .form-section .input-wrapper {
+  margin-bottom: 10px;
+}
 .modal-body .form-section .input-wrapper.span-2 {
   grid-column: span 2;
 }
 .modal-body .form-section .input-wrapper.span-3 {
   grid-column: span 3;
 }
-.modal-body .form-grid .personal-info,
-.modal-body .form-grid .govt-info,
-.modal-body .form-grid .contact-address-info {
+.modal-body .form-section .input-wrapper.span-4 {
+  grid-column: span 4;
+}
+.modal-body .grid-4, .modal-body .education-form-grid,
+.modal-body .eligibility-form-grid,
+.modal-body .voluntary-form-grid,
+.modal-body .training-form-grid,
+.modal-body .other-form-grid,
+.modal-body .family-form-grid,
+.modal-body .work-form-grid, .modal-body .personal-form-grid .personal-info,
+.modal-body .personal-form-grid .govt-info,
+.modal-body .personal-form-grid .contact-address-info {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+}
+.modal-body .date-range, .modal-body .work-form-grid .inclusive-date .date-range,
+.modal-body .education-form-grid .attendance .date-range,
+.modal-body .voluntary-form-grid .inclusive-date .date-range,
+.modal-body .training-form-grid .inclusive-date .date-range {
+  display: flex;
+  gap: 12px;
+}
+.modal-body .date-range input, .modal-body .work-form-grid .inclusive-date .date-range input,
+.modal-body .education-form-grid .attendance .date-range input,
+.modal-body .voluntary-form-grid .inclusive-date .date-range input,
+.modal-body .training-form-grid .inclusive-date .date-range input {
+  flex: 1;
+}
+.modal-body .personal-form-grid .personal-info,
+.modal-body .personal-form-grid .govt-info,
+.modal-body .personal-form-grid .contact-address-info {
   margin-bottom: 40px;
+}
+.modal-body .work-form-grid .inclusive-date,
+.modal-body .education-form-grid .attendance,
+.modal-body .voluntary-form-grid .inclusive-date,
+.modal-body .training-form-grid .inclusive-date {
+  grid-column: span 2;
+}
+.modal-body .other-form-grid .references {
+  grid-column: span 4;
+}
+.modal-body .other-form-grid .references .btn-add-reference img {
+  height: 15px;
+  width: 15px;
+}
+.modal-body .other-form-grid .references .ref-inputs {
+  display: flex;
+  gap: 12px;
+  margin: 10px 0;
+}
+.modal-body .other-form-grid .references .ref-inputs .address-wrapper {
+  flex: 1;
+}
+.modal-body .other-form-grid .references .ref-inputs label {
+  font-size: 10px;
+}
+.modal-body .other-form-grid .references .ref-inputs input {
+  flex: 1;
+}
+.modal-body .family-form-grid .family {
+  grid-column: span 4;
+}
+.modal-body .family-form-grid .family .input-wrapper {
+  margin-bottom: 10px;
+}
+.modal-body .family-form-grid .family .btn-add-children img {
+  height: 15px;
+  width: 15px;
+}
+.modal-body .family-form-grid .family .spouse-info,
+.modal-body .family-form-grid .family .father-info,
+.modal-body .family-form-grid .family .mother-info,
+.modal-body .family-form-grid .family .children-info {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.modal-body .family-form-grid .family .spouse-info label,
+.modal-body .family-form-grid .family .father-info label,
+.modal-body .family-form-grid .family .mother-info label,
+.modal-body .family-form-grid .family .children-info label {
+  font-size: 10px;
+}
+.modal-body .family-form-grid .family .spouse-info input,
+.modal-body .family-form-grid .family .father-info input,
+.modal-body .family-form-grid .family .mother-info input,
+.modal-body .family-form-grid .family .children-info input {
+  flex: 2;
 }
 .modal-body label {
   font-size: 12px;
@@ -362,29 +449,26 @@ input:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 }
-.modal-body input[type=date] {
-  /* optional: consistent appearance for date inputs */
-}
 @media (max-width: 768px) {
   .modal-body .pds-form {
     flex-direction: column;
   }
   .modal-body .pds-nav {
-    width: 100%; /* Full width */
-    min-width: unset; /* Override min-width */
+    width: 100%;
+    min-width: unset;
     border-right: none;
     border-bottom: 1px solid #eee;
   }
   .modal-body .pds-nav ul {
-    display: flex; /* Horizontal nav */
+    display: flex;
     gap: 8px;
-    overflow-x: auto; /* Scrollable kung hindi kasya */
+    overflow-x: auto;
     white-space: nowrap;
     padding: 0;
     margin: 0;
   }
   .modal-body .pds-nav li {
-    flex: none; /* Hindi mag-shrink */
+    flex: none;
     padding: 8px 12px;
   }
   .modal-body .form-section {

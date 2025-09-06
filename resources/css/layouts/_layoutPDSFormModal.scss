@@ -55,18 +55,116 @@
         .input-wrapper {
             &.span-2 { grid-column: span 2; }
             &.span-3 { grid-column: span 3; }
-        }
-        
+            &.span-4 { grid-column: span 4; }
+            margin-bottom: 10px; // common spacing
+        } 
     }
 
-    .form-grid {
+    /* Shared Grid Styles */
+    .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+
+    .date-range {
+        display: flex;
+        gap: 12px;
+
+        input {
+            flex: 1;
+        }
+    }
+
+    .personal-form-grid {
         .personal-info,
         .govt-info,
         .contact-address-info {
+            @extend .grid-4;
+            margin-bottom: 40px;
+        }
+    }
+
+    .education-form-grid,
+    .eligibility-form-grid,
+    .voluntary-form-grid,
+    .training-form-grid,
+    .other-form-grid,
+    .family-form-grid,
+    .work-form-grid {
+        @extend .grid-4;
+    }
+
+    /* Inclusive Dates */
+    .work-form-grid .inclusive-date,
+    .education-form-grid .attendance,
+    .voluntary-form-grid .inclusive-date,
+    .training-form-grid .inclusive-date {
+        grid-column: span 2;
+
+        .date-range {
+            @extend .date-range;
+        }
+    }
+
+    /* Other Form Specific */
+    .other-form-grid {
+        .references {
+            grid-column: span 4;
+
+            .btn-add-reference img {
+                height: 15px;
+                width: 15px;
+            }
+
+            .ref-inputs {
+                display: flex;
+                gap: 12px;
+                margin: 10px 0;
+
+                .address-wrapper {
+                    flex: 1;
+                }
+
+                label {
+                    font-size: 10px;
+                }
+
+                input {
+                    flex: 1;
+                }
+            }
+        }
+    }
+
+    /* Family Form */
+    .family-form-grid .family {
+        grid-column: span 4;
+
+        .input-wrapper {
+            margin-bottom: 10px;
+        }
+
+        .btn-add-children img {
+            height: 15px;
+            width: 15px;
+        }
+
+        .spouse-info,
+        .father-info,
+        .mother-info,
+        .children-info {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
-            gap: 16px;
-            margin-bottom: 40px;  
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+
+            label {
+                font-size: 10px;
+            }
+
+            input {
+                flex: 2;
+            }
         }
     }
 
@@ -78,7 +176,6 @@
         color: #898989;
     }
 
-    /* Input / Select / Date styles */
     input,
     select {
         width: 100%;
@@ -96,10 +193,6 @@
         }
     }
 
-    input[type="date"] {
-        /* optional: consistent appearance for date inputs */
-    }
-
     /* ✅ Responsive - Mobile */
     @media (max-width: 768px) {
         .pds-form {
@@ -107,22 +200,22 @@
         }
 
         .pds-nav {
-            width: 100%; /* Full width */
-            min-width: unset; /* Override min-width */
+            width: 100%;
+            min-width: unset;
             border-right: none;
             border-bottom: 1px solid #eee;
 
             ul {
-                display: flex; /* Horizontal nav */
+                display: flex;
                 gap: 8px;
-                overflow-x: auto; /* Scrollable kung hindi kasya */
+                overflow-x: auto;
                 white-space: nowrap;
                 padding: 0;
                 margin: 0;
             }
 
             li {
-                flex: none; /* Hindi mag-shrink */
+                flex: none;
                 padding: 8px 12px;
             }
         }
