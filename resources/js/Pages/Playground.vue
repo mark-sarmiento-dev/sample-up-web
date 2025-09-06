@@ -5,7 +5,7 @@
             <h3>Modals</h3>
             <div class="components-wrapper">
                 <Button variant="secondary" size="md" @click="pdsFormModal.showModal = true">
-                    Open Small Modal
+                    Open PDS Form
                 </Button>
             </div>
 
@@ -30,9 +30,6 @@ import Button from "@/components/Common/Button.vue";
 
 const pdsFormModal = ref(null);
 
-const save = () => {
-    console.log("Save button clicked");
-};
 </script>
 
 <style scoped>
