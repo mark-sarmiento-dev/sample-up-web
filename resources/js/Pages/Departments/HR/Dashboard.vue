@@ -34,53 +34,7 @@
 
             <!-- Employee Tab -->
             <section v-show="activeTab === 'employee'" id="employee">
-                <div class="employee-header">
-                    <input type="text" placeholder="Search employee ..." class="search-bar" />
-                    <Button variant="primary">
-                        <img class="icon" src="images/icons/plus.png"/> Add Employee
-                    </Button>
-                </div>
-                <div class="employee-table-wrapper">
-                    <table class="employee-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Date of Birth</th>
-                                <th>Agency Employee No.</th>
-                                <th>Sex</th>
-                                <th>Civil Status</th>
-                                <th>Citizenship</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>John Doe</td>
-                                <td>03/24/2001</td>
-                                <td>EMP-001234</td>
-                                <td>Male</td>
-                                <td>Single</td>
-                                <td>Filipino</td>
-                                <td>
-                                    <Button variant="secondary" size="xs">
-                                        <img class="icon" src="images/icons/view.png"/>
-                                    </Button>
-                                    <Button variant="secondary" size="xs">
-                                        <img class="icon" src="images/icons/edit.png"/>
-                                    </Button>
-                                    <Button variant="secondary" size="xs">
-                                        <img class="icon" src="images/icons/delete.png"/>
-                                    </Button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- <div class="pagination">
-                    <button>&laquo;</button>
-                    <span>Page 22</span>
-                    <button>&raquo;</button>
-                </div> -->
+                <EmployeeTab />
             </section>
 
 
@@ -127,6 +81,7 @@
     import Header from '@/components/Header/Header.vue';
     import Sidebar from '@/components/Sidebar/Sidebar.vue';
     import Button from "@/components/Common/Button.vue";
+    import EmployeeTab from './Tabs/EmployeeTab.vue';
 
 
     // Sidebar tabs

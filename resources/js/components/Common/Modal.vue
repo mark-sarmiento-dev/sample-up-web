@@ -36,9 +36,11 @@ const props = defineProps({
     height: { type: String, default: "auto" }, // sm, md, lg, full, auto
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "save"]);
 
-const close = () => emit("update:modelValue", false);
+const close = () => {
+    emit("update:modelValue", false);
+};
 
 // Width class
 const sizeClass = computed(() => {

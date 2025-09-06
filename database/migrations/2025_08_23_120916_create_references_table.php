@@ -9,7 +9,7 @@ return new class extends Migration {
         Schema::create('references', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('address')->nullable();
             $table->string('telephone_no')->nullable();
             $table->timestamps();
