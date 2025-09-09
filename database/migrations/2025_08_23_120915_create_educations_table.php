@@ -9,8 +9,8 @@ return new class extends Migration {
         Schema::create('educations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->string('level'); // elementary, secondary, vocational, college, graduate
-            $table->string('school_name');
+            $table->string('level')->nullable(); // elementary, secondary, vocational, college, graduate
+            $table->string('school_name')->nullable();
             $table->string('degree_course')->nullable();
             $table->string('year_graduated')->nullable();
             $table->integer('units_earned')->nullable();

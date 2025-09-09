@@ -9,7 +9,7 @@ return new class extends Migration {
         Schema::create('trainings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->date('period_from')->nullable();
             $table->date('period_to')->nullable();
             $table->integer('hours')->nullable();

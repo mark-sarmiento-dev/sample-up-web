@@ -9,7 +9,7 @@ return new class extends Migration {
         Schema::create('eligibilities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->string('eligibility');
+            $table->string('eligibility')->nullable();
             $table->integer('rating')->nullable();
             $table->date('exam_date')->nullable();
             $table->string('exam_place')->nullable();

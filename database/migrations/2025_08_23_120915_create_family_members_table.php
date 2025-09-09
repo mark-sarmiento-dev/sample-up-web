@@ -9,8 +9,8 @@ return new class extends Migration {
         Schema::create('family_members', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->string('relationship'); // spouse, father, mother, child
-            $table->string('name');
+            $table->string('relationship')->nullable(); // spouse, father, mother, child
+            $table->string('name')->nullable();
             $table->date('birth_date')->nullable();
             $table->string('occupation')->nullable();
             $table->string('employer')->nullable();

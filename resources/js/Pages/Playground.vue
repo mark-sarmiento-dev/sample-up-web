@@ -4,7 +4,7 @@
       <div class="playground-content">
         <h3>Modals</h3>
         <div class="components-wrapper">
-          <Button variant="secondary" size="md" @click="pdsFormModal.showModal = true">
+          <Button variant="secondary" size="md" @click="pdsFormModal.value.showModal = true">
             Open PDS Form
           </Button>
         </div>
@@ -27,12 +27,9 @@
   import { ref, onMounted } from "vue";
   import PDSFormModal from "@/components/PDSForm/PDSFormModal.vue";
   import Button from "@/components/Common/Button.vue";
-  
-  // Import NotificationService
   import notify from "@/Services/NotificationService.js";
   
   const pdsFormModal = ref(null);
-
   const isSuccessFetch = true;
   
   // ✅ Show notification automatically on mount
@@ -71,4 +68,3 @@
     margin-bottom: 20px;
   }
   </style>
-  
