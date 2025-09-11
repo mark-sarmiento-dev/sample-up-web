@@ -1,28 +1,52 @@
 <template>
-    <Modal v-model="showModal" title="PDS Form" size="lg" height="full" @save="handleSave">
+    <Modal v-model="showModal" title="PDS Form" size="lg" height="full">
         <div class="pds-form">
             <!-- Sidebar Navigation -->
             <nav class="pds-nav">
                 <ul>
-                    <li v-for="(tab, index) in tabs" :key="index" :class="{ active: activeTab === tab.key }" @click="activeTab = tab.key">
+                    <li v-for="(tab, index) in tabs" 
+                        :key="index"
+                        :class="{
+                            active: activeTab === tab.key,
+                            'tab-valid': tabIsValid(tab.key)
+                        }"
+                            @click="activeTab = tab.key"
+                        >
                         {{ tab.label }}
+                        <span v-if="tabIsValid(tab.key)">&#10003;</span>
                     </li>
                 </ul>
             </nav>
 
             <!-- Form Section -->
-            <Form :active-tab="activeTab" v-model:formData="formData"/>
+            <Form :active-tab="activeTab" v-model:formData="formData" :errors="errors" :validateField="validateField"/>
         </div>
+
+        <template #footer>
+            <Button variant="secondary" size="md" @click="close">Cancel</Button>
+
+            <Button
+                variant="primary"
+                size="md"
+                @click="goNextTab"
+            >
+                {{ currentTabIndex === tabs.length - 1 ? "Submit" : "Next" }}
+            </Button>
+        </template>
     </Modal>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch, computed } from "vue";
 import Modal from "@/components/Common/Modal.vue";
 import Form from "@/components/PDSForm/Form.vue";
+import Button from "../Common/Button.vue";
 import employeeService from "@/services/employeeService.js";
+import { useValidation } from "../../Composables/useValidation";
+import notify from "@/Services/NotificationService.js";
 
 const showModal = ref(false);
+const { errors, validateField, validateTab, rulesPerTab } = useValidation();
 
 const tabs = [
     { key: "personal", label: "Personal Details" },
@@ -40,6 +64,12 @@ const activeTab = ref("personal");
 const formData = ref({});
 
 const emit = defineEmits(["saved"]);
+
+const validatedTabs = ref(new Set())
+
+const currentTabIndex = computed(() =>
+  tabs.findIndex((tab) => tab.key === activeTab.value)
+);
 
 function buildPayload(f) {
     const payload = {
@@ -213,17 +243,64 @@ function buildPayload(f) {
     return payload;
 }
 
-async function handleSave() {
-    try {
-        const payload = buildPayload(formData.value || {});
-        console.log("Payload being sent:", payload); // 👈 debug
-        await employeeService.create(payload);
-        showModal.value = false;
-        emit("saved");
-    } catch (error) {
-        console.error("Failed to save employee:", error.response?.data || error);
-        alert("Failed to save employee. Check console for details.");
+function goNextTab() {
+    const currentKey = activeTab.value;
+    const valid = validateTab(currentKey, formData.value);
+
+    if (!valid) {
+        notify("warning", "Cannot proceed, Please fill the required fields.");
+        return;
     }
+
+    validatedTabs.value.add(currentKey)
+
+    const nextIndex = currentTabIndex.value + 1;
+
+    if (nextIndex < tabs.length) {
+        activeTab.value = tabs[nextIndex].key;
+    } else {
+        const allValid = tabs.every(tab => validateTab(tab.key, formData.value))
+        if (!allValid) {
+            notify("warning", "Please complete all required fields in every tab before submitting.")
+            return;
+        }
+        handleSave();
+    }
+}
+
+function tabIsValid(tabKey) {
+    if (!validatedTabs.value.has(tabKey)) return false;  // not yet validated
+
+    const requiredFields = rulesPerTab[tabKey] || [];
+
+    return requiredFields.every((field) => !errors[field]);
+}
+
+// Remove error message upon typing if valid
+watch(
+    () => formData.value,
+    (newVal) => {
+        for (const key in newVal) {
+            validateField(key, newVal[key]);
+        }
+    },
+    { deep: true }
+);
+
+
+async function handleSave() {
+    console.log("save!")
+
+    // try {
+    //     const payload = buildPayload(formData.value || {});
+    //     console.log("Payload being sent:", payload); // 👈 debug
+    //     await employeeService.create(payload);
+    //     showModal.value = false;
+    //     emit("saved");
+    // } catch (error) {
+    //     console.error("Failed to save employee:", error.response?.data || error);
+    //     alert("Failed to save employee. Check console for details.");
+    // }
 }
 
 function open() {
