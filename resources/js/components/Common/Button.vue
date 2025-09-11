@@ -1,12 +1,11 @@
 <template>
-    <button
-      :class="['btn', variantClass, sizeClass]"
-      :disabled="disabled"
-      @click="$emit('click', $event)"
-    >
-      <slot />
-    </button>
-  </template>
+  <button
+    :class="['btn', variantClass, sizeClass]"
+    :disabled="disabled"
+  >
+    <slot />
+  </button>
+</template>
   
   <script setup>
   import { computed } from "vue"

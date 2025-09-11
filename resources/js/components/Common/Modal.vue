@@ -16,10 +16,7 @@
 
             <!-- Footer -->
             <div class="modal-footer">
-                <slot name="footer">
-                    <Button variant="secondary" size="md" @click="close">Cancel</Button>
-                    <Button variant="primary" size="md" @click="$emit('save')">Save</Button>
-                </slot>
+                <slot name="footer"></slot>
             </div>
         </div>
     </div>

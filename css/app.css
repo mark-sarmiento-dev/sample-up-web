@@ -179,6 +179,9 @@
   font-weight: 500;
   z-index: 9999;
 }
+.notification span {
+  margin-right: 20px;
+}
 .notification .close-btn {
   background: none;
   border: none;
@@ -417,6 +420,13 @@ input:focus {
   color: #333;
   font-weight: bold;
 }
+.modal-body .pds-nav li img {
+  height: 15px;
+  width: 15px;
+}
+.modal-body .pds-nav .tab-valid {
+  color: #008000;
+}
 .modal-body .form-section {
   flex: 1;
   overflow-y: auto;
@@ -497,11 +507,19 @@ input:focus {
 .modal-body .other-form-grid .references .ref-inputs input {
   flex: 1;
 }
+.modal-body .other-form-grid .references .remove-ref-icon {
+  height: 12px;
+  width: 12px;
+  margin-top: 25px;
+}
 .modal-body .family-form-grid .family {
   grid-column: span 4;
 }
 .modal-body .family-form-grid .family .input-wrapper {
   margin-bottom: 10px;
+}
+.modal-body .family-form-grid .family .btn-add-children {
+  margin-top: 10px;
 }
 .modal-body .family-form-grid .family .btn-add-children img {
   height: 15px;
@@ -525,7 +543,12 @@ input:focus {
 .modal-body .family-form-grid .family .father-info input,
 .modal-body .family-form-grid .family .mother-info input,
 .modal-body .family-form-grid .family .children-info input {
-  flex: 2;
+  flex: 1;
+}
+.modal-body .family-form-grid .family .children-info .remove-children-icon {
+  height: 12px;
+  width: 12px;
+  margin-top: 25px;
 }
 .modal-body label {
   font-size: 12px;
@@ -1022,6 +1045,11 @@ main.login-container .toggle-password img {
   padding: 0;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
+}
+
+.input-error-msg {
+  color: #d62323;
+  font-size: 12px;
 }
 
 html, body {
