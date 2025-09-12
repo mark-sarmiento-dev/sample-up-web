@@ -1,6 +1,7 @@
 @use 'components/componentModal';
 @use 'components/componentButton';
 @use 'components/componentNotification';
+@use 'components/componentCard';
 
 @use 'layouts/layoutEmployeeTab';
 @use 'layouts/layoutPDSFormModal';
@@ -8,6 +9,7 @@
 @use 'layouts/layoutDashboard';
 @use 'layouts/layoutHeader';
 @use 'layouts/layoutSidebar';
+@use 'layouts/layoutUserDropdown';
 
 :root {
     --color-primary: #5b5b5b;

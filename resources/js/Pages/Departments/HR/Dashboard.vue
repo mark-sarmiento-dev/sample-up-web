@@ -12,24 +12,7 @@
 
             <!-- Dashboard Tab -->
             <section v-show="activeTab === 'dashboard'" class="tab-content">
-                <div class="dashboard-grid">
-                    <div class="card">
-                        <h2>Recruitment Selection and Payment</h2>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                    </div>
-                    <div class="card">
-                        <h2>Learning and Development</h2>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                    </div>
-                    <div class="card">
-                        <h2>Performance Management</h2>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                    </div>
-                    <div class="card">
-                        <h2>Rewards and Recognition</h2>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                    </div>
-                </div>
+                <p>Dashboard Management content goes here.</p>
             </section>
 
             <!-- Employee Tab -->
