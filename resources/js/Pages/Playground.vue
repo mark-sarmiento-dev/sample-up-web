@@ -34,6 +34,25 @@
                 </Card>
             </div>
 
+            <h3>Dropdown</h3>
+            <!-- Default bottom-right -->
+            <Dropdown style="margin-right: 20px;" label="Bottom Right" placement="bottom-right">
+                <a href="#">Account Settings</a>
+                <a href="#">Logout</a>
+            </Dropdown>
+
+            <!-- Appear on bottom left -->
+            <Dropdown style="margin-right: 20px;" label="Bottom Left" placement="bottom-left">
+                <a href="#">Message 1</a>
+                <a href="#">Message 2</a>
+            </Dropdown>
+
+            <!-- Appear on top left -->
+            <Dropdown label="Top Left" placement="top-left">
+                <a href="#">Message 1</a>
+                <a href="#">Message 2</a>
+            </Dropdown>
+
             <!-- Modal -->
             <Modal v-model:modelValue="showModal" />
         </div>
@@ -45,7 +64,8 @@
     import Modal from "@/components/Common/Modal.vue";
     import Button from "@/components/Common/Button.vue";
     import notify from "@/Services/NotificationService.js";
-    import Card from "../Components/Common/Card.vue";
+    import Card from "@/components/Common/Card.vue";
+    import Dropdown from "../Components/Common/Dropdown.vue";
 
     const showModal = ref(false);
     const isSuccessFetch = true;

@@ -324,6 +324,73 @@
   padding-top: 8px;
 }
 
+.dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  min-width: 190px;
+  z-index: 1000;
+  padding: 8px 5px;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+  background: #f5f5f5;
+}
+
+/* BOTTOM placements */
+.dropdown.bottom-right .dropdown-menu {
+  top: 100%;
+  right: 0;
+}
+
+.dropdown.bottom-left .dropdown-menu {
+  top: 100%;
+  left: 0;
+}
+
+.dropdown.bottom-center .dropdown-menu {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* TOP placements */
+.dropdown.top-right .dropdown-menu {
+  bottom: 100%;
+  right: 0;
+}
+
+.dropdown.top-left .dropdown-menu {
+  bottom: 100%;
+  left: 0;
+}
+
+.dropdown.top-center .dropdown-menu {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 /* employee style */
 .employee-header {
   display: flex;
@@ -835,44 +902,6 @@ main.login-container .toggle-password img {
     display: block;
   }
 }
-/* Dropdown for user profile */
-.user-dropdown {
-  position: relative;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 50px; /* below the header */
-  right: 0;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  z-index: 100;
-  min-width: 190px;
-}
-
-.dropdown-menu a {
-  display: block;
-  padding: 10px 15px;
-  color: #333;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.dropdown-menu a:hover {
-  background-color: #f5f5f5;
-}
-
-.user-dropdown.active .dropdown-menu {
-  display: block;
-  padding: 5px;
-}
-
 /* Header */
 .header {
   grid-area: header;
@@ -928,46 +957,6 @@ main.login-container .toggle-password img {
 .header .logo-text small {
   font-size: 12px;
   opacity: 0.9;
-}
-
-/* Dropdown */
-.user-dropdown {
-  position: relative;
-}
-
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 100%;
-  background: #fff;
-  border: 1px solid #ddd;
-  min-width: 180px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  padding: 8px 5px;
-  opacity: 0;
-  transform: translateY(5px);
-  transition: all 0.2s ease-in-out;
-}
-
-.dropdown-menu a {
-  display: block;
-  padding: 10px 15px;
-  color: #333;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.dropdown-menu a:hover {
-  background-color: #f0f0f0;
-}
-
-/* Hover effect */
-.user-dropdown:hover .dropdown-menu {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* Sidebar */
