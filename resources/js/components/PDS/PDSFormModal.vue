@@ -289,18 +289,24 @@ watch(
 
 
 async function handleSave() {
-    console.log("save!")
+    console.log("save!");
 
-    // try {
-    //     const payload = buildPayload(formData.value || {});
-    //     console.log("Payload being sent:", payload); // 👈 debug
-    //     await employeeService.create(payload);
-    //     showModal.value = false;
-    //     emit("saved");
-    // } catch (error) {
-    //     console.error("Failed to save employee:", error.response?.data || error);
-    //     alert("Failed to save employee. Check console for details.");
-    // }
+    try {
+        const payload = buildPayload(formData?.value || {});
+        console.log("Payload being sent:", payload);
+
+        await employeeService.create(payload);
+
+        notify("success", "Employee saved successfully!");
+
+        showModal.value = false;
+        emit("saved");
+    } catch (error) {
+        const errorMsg = error.response?.data || error.message || error;
+        console.error("Failed to save employee:", errorMsg);
+
+        notify("warning", "Failed to save employee.", errorMsg);
+    }
 }
 
 function open() {
