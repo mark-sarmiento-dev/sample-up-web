@@ -38,11 +38,11 @@
 
 <script setup>
 import { ref, watch, computed } from "vue";
-import Modal from "@/components/Common/Modal.vue";
-import Form from "@/components/PDSForm/Form.vue";
-import Button from "../Common/Button.vue";
-import employeeService from "@/services/employeeService.js";
-import { useValidation } from "../../Composables/useValidation";
+import Modal from "@/Components/Common/Modal.vue";
+import Form from "@/Components/PDS/Form.vue";
+import Button from "@/Components/Common/Button.vue";
+import employeeService from "@/Services/employeeService.js";
+import { useValidation } from "@/Composables/useValidation";
 import notify from "@/Services/NotificationService.js";
 
 const showModal = ref(false);

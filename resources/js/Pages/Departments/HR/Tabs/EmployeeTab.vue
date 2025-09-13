@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import Button from "@/components/Common/Button.vue";
-import employeeService from "@/services/employeeService";
-import PDSFormModal from '@/components/PDSForm/PDSFormModal.vue';
+import Button from "@/Components/Common/Button.vue";
+import employeeService from "@/Services/employeeService";
+import PDSFormModal from '@/Components/PDS/PDSFormModal.vue';
 
 const employees = ref([]);
 const search = ref("");
