@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import Button from "@/Components/Common/Button.vue";
 import employeeService from "@/Services/employeeService";
 import PDSFormModal from '@/Components/PDS/PDSFormModal.vue';
+import Tooltip from "@/Components/Common/Tooltip.vue";
 
 const employees = ref([]);
 const search = ref("");
@@ -74,9 +75,12 @@ const filteredEmployees = computed(() =>
             <td>{{ emp.civil_status }}</td>
             <td>{{ emp.citizenship }}</td>
             <td>
-              <Button variant="secondary" size="xs">
-                <img class="icon" src="images/icons/view.png"/>
-              </Button>
+              <Tooltip text="View Details" placement="top">
+                <Button variant="secondary" size="xs">
+                  <img class="icon" src="images/icons/view.png"/>
+                </Button>
+              </Tooltip>
+              
               <Button variant="secondary" size="xs">
                 <img class="icon" src="images/icons/edit.png"/>
               </Button>

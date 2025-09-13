@@ -2,23 +2,24 @@
     <div class="playground-container">
         <h1>Playground</h1>
         <div class="playground-content">
-            <h3>Modals</h3>
+            
             <div class="components-wrapper">
+                <h3>Modals</h3>
                 <Button variant="secondary" size="md" @click="showModal = true">
                     Open Modal
                 </Button>
             </div>
 
-            <h3>Buttons</h3>
             <div class="components-wrapper">
+                <h3>Buttons</h3>
                 <Button variant="secondary" size="lg">Button Large</Button>
                 <Button variant="secondary" size="md">Button Medium</Button>
                 <Button variant="secondary" size="sm">Button Small</Button>
                 <Button variant="secondary" size="xs">Button X-Small</Button>
             </div>
 
-            <h3>Cards</h3>
             <div class="components-wrapper">
+                <h3>Cards</h3>
                 <Card size="sm" title="Small Card" footer-text="Last updated: Today">
                     <p>This is a small card.</p>
                 </Card>
@@ -33,25 +34,45 @@
                     <p>This is a large card.</p>
                 </Card>
             </div>
+           
+            <div class="components-wrapper">
+                <h3>Dropdown</h3>
+                <Dropdown style="margin-right: 20px;" label="Bottom Right" placement="bottom-right">
+                    <a href="#">Account Settings</a>
+                    <a href="#">Logout</a>
+                </Dropdown>
 
-            <h3>Dropdown</h3>
-            <!-- Default bottom-right -->
-            <Dropdown style="margin-right: 20px;" label="Bottom Right" placement="bottom-right">
-                <a href="#">Account Settings</a>
-                <a href="#">Logout</a>
-            </Dropdown>
+                <!-- Appear on bottom left -->
+                <Dropdown style="margin-right: 20px;" label="Bottom Left" placement="bottom-left">
+                    <a href="#">Message 1</a>
+                    <a href="#">Message 2</a>
+                </Dropdown>
 
-            <!-- Appear on bottom left -->
-            <Dropdown style="margin-right: 20px;" label="Bottom Left" placement="bottom-left">
-                <a href="#">Message 1</a>
-                <a href="#">Message 2</a>
-            </Dropdown>
+                <!-- Appear on top left -->
+                <Dropdown label="Top Left" placement="top-left">
+                    <a href="#">Message 1</a>
+                    <a href="#">Message 2</a>
+                </Dropdown>
+            </div>
+            
+            <div class="components-wrapper">
+                <h3>Tooltip</h3>
+                <Tooltip text="Tooltip on Top" placement="top">
+                    <Button variant="secondary" size="sm">Top Tooltip</Button>
+                </Tooltip>
 
-            <!-- Appear on top left -->
-            <Dropdown label="Top Left" placement="top-left">
-                <a href="#">Message 1</a>
-                <a href="#">Message 2</a>
-            </Dropdown>
+                <Tooltip text="Tooltip on Bottom" placement="bottom">
+                    <Button variant="secondary" size="sm">Bottom Tooltip</Button>
+                </Tooltip>
+
+                <Tooltip text="Tooltip on Left" placement="left">
+                    <Button variant="secondary" size="sm">Left Tooltip</Button>
+                </Tooltip>
+
+                <Tooltip text="Tooltip on Right" placement="right">
+                    <Button variant="secondary" size="sm">Right Tooltip</Button>
+                </Tooltip>
+            </div>
 
             <!-- Modal -->
             <Modal v-model:modelValue="showModal" />
@@ -66,6 +87,7 @@
     import notify from "@/Services/NotificationService.js";
     import Card from "@/components/Common/Card.vue";
     import Dropdown from "../Components/Common/Dropdown.vue";
+    import Tooltip from "../Components/Common/Tooltip.vue";
 
     const showModal = ref(false);
     const isSuccessFetch = true;
@@ -100,9 +122,8 @@
     /* 🔽 Stack buttons vertically */
     .components-wrapper {
         display: flex;
-        flex-direction: column;
         gap: 12px; /* spacing between buttons */
-        max-width: 200px; /* optional: limit width */
-        margin-bottom: 20px;
+        width: 100%; /* optional: limit width */
+        margin-bottom: 40px;
     }
 </style>
