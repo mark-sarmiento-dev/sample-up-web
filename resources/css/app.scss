@@ -13,6 +13,7 @@
 @use 'layouts/layoutDashboard';
 @use 'layouts/layoutHeader';
 @use 'layouts/layoutSidebar';
+@use 'layouts/layoutDashboardTab';
 
 :root {
     --color-primary: #5b5b5b;

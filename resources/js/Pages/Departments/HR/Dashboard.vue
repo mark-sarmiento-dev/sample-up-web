@@ -12,7 +12,7 @@
 
             <!-- Dashboard Tab -->
             <section v-show="activeTab === 'dashboard'" class="tab-content">
-                <p>Dashboard Management content goes here.</p>
+                <DashboardTab />
             </section>
 
             <!-- Employee Tab -->
@@ -65,6 +65,7 @@
     import Sidebar from '@/components/Sidebar/Sidebar.vue';
     import Button from "@/components/Common/Button.vue";
     import EmployeeTab from './Tabs/EmployeeTab.vue';
+    import DashboardTab from "./Tabs/DashboardTab.vue";
 
 
     // Sidebar tabs
