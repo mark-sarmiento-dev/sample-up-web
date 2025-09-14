@@ -74,6 +74,13 @@
                 </Tooltip>
             </div>
 
+            <div class="components-wrapper">
+                <h3>Input</h3>
+                <Input v-model="name" name="awdaw" placeholder="Enter your name" size="sm" />
+                <Input v-model="name" name="drgdrg" placeholder="Enter your name" size="md" />
+                <Input v-model="name" name="jijo" placeholder="Enter your name" size="lg" />
+            </div>
+
             <!-- Modal -->
             <Modal v-model:modelValue="showModal" />
         </div>
@@ -88,6 +95,7 @@
     import Card from "@/components/Common/Card.vue";
     import Dropdown from "../Components/Common/Dropdown.vue";
     import Tooltip from "../Components/Common/Tooltip.vue";
+    import Input from "../Components/Common/Input.vue";
 
     const showModal = ref(false);
     const isSuccessFetch = true;
@@ -125,5 +133,6 @@
         gap: 12px; /* spacing between buttons */
         width: 100%; /* optional: limit width */
         margin-bottom: 40px;
+        align-items: flex-start;
     }
 </style>
