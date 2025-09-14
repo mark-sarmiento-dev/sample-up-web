@@ -1,6 +1,4 @@
-@charset "UTF-8";
-.modal {
-  position: fixed;
+/*# sourceMappingURL=app.css.map */on: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -485,6 +483,32 @@
   border-color: transparent #5b5b5b transparent transparent;
 }
 
+input {
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #333;
+}
+
+.input-sm {
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+.input-md {
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.input-lg {
+  padding: 12px 14px;
+  font-size: 16px;
+}
+
 /* employee style */
 .employee-header {
   display: flex;
@@ -583,12 +607,6 @@
   padding: 6px 12px;
   cursor: pointer;
   border: 1px solid #eaeaea;
-}
-
-input:focus {
-  outline: none; /* tanggalin ang default outline */
-  border: 1px solid #ccc; /* same border color sa normal state */
-  border-radius: 0; /* tanggalin ang border radius */
 }
 
 .modal-body {
