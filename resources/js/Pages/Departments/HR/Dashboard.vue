@@ -53,7 +53,7 @@
 
             <!-- Account Tab -->
             <section v-show="activeTab === 'account'" class="tab-content">
-                <p>Account Management content goes here.</p>
+                <AccountTab />
             </section>
         </main>
     </div>
@@ -66,6 +66,7 @@
     import Button from "@/components/Common/Button.vue";
     import EmployeeTab from './Tabs/EmployeeTab.vue';
     import DashboardTab from "./Tabs/DashboardTab.vue";
+    import AccountTab from "./Tabs/AccountTab.vue";
 
 
     // Sidebar tabs
