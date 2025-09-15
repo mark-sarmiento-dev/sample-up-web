@@ -116,6 +116,27 @@
         }
     }
 
+    .education-form-grid + .education-form-grid {
+        margin-top: 40px;
+    }
+
+    .education-form-grid {
+        position: relative;
+
+        img {
+            position: absolute;
+            height: 12px;
+            width: 12px;
+            right: 0;
+            top: -10px;
+        }
+    }
+
+    .btn-add-education img {
+        height: 12px;
+        width: 12px;
+    }
+
     /* Other Form Specific */
     .other-form-grid {
         .references {

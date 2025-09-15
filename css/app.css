@@ -688,6 +688,23 @@ input:focus {
 .modal-body .training-form-grid .inclusive-date {
   grid-column: span 2;
 }
+.modal-body .education-form-grid + .education-form-grid {
+  margin-top: 40px;
+}
+.modal-body .education-form-grid {
+  position: relative;
+}
+.modal-body .education-form-grid img {
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  right: 0;
+  top: -10px;
+}
+.modal-body .btn-add-education img {
+  height: 12px;
+  width: 12px;
+}
 .modal-body .other-form-grid .references {
   grid-column: span 4;
 }

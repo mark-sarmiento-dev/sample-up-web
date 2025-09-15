@@ -296,12 +296,12 @@
 
             <div v-else-if="activeTab === 'education'">
                 <h3>Educational Background</h3>
-                <div class="education-form-grid">
+                <div v-for="(educations, idx) in internalForm.educations" :key="`child-${idx}`" class="education-form-grid">
                     <div class="input-wrapper span-2">
                         <label>Highest Educational Attainment</label>
                         <select 
-                            v-model="internalForm.educations[0].highest_educational_attainment"
-                            @change="validateField('educations[0].highest_educational_attainment', internalForm.educations[0].highest_educational_attainment)"
+                            v-model="educations.highest_educational_attainment"
+                            @change="validateField(`educations[${idx}].highest_educational_attainment`, educations.highest_educational_attainment)"
                         >
                             <option value="">Select</option>
                             <option value="elementary">Elementary</option>
@@ -310,45 +310,49 @@
                             <option value="college">College</option>
                             <option value="graduate">Graduate Studies</option>
                         </select>
-                        <span v-if="errors['educations[0].highest_educational_attainment']" class="error input-error-msg">
-                            {{ errors['educations[0].highest_educational_attainment'] }}
+                        <span v-if="errors[`educations[${idx}].highest_educational_attainment`]" class="error input-error-msg">
+                            {{ errors[`educations[${idx}].highest_educational_attainment`] }}
                         </span>
                     </div>
                     <div class="input-wrapper span-2">
                         <label>Name of School</label>
                         <input 
                             type="text" 
-                            v-model="internalForm.educations[0].school_name" 
-                            @input="validateField('educations[0].school_name', internalForm.educations[0].school_name)"
+                            v-model="educations.school_name" 
+                            @input="validateField(`educations[${idx}].school_name`, educations.school_name)"
                         />
-                        <span v-if="errors['educations[0].school_name']" class="error input-error-msg">
-                            {{ errors['educations[0].school_name'] }}
+                        <span v-if="errors[`educations[${idx}].school_name`]" class="error input-error-msg">
+                            {{ errors[`educations[${idx}].school_name`] }}
                         </span>
                     </div>
                     <div class="attendance span-2">
                         <label>Period of  Attendance (From - To)</label>
                         <div class="date-range">
-                            <input type="date" placeholder="From" v-model="internalForm.educations[0].attendance_from" />
-                            <input type="date" placeholder="To" v-model="internalForm.educations[0].attendance_to" />
+                            <input type="date" placeholder="From" v-model="educations.attendance_from" />
+                            <input type="date" placeholder="To" v-model="educations.attendance_to" />
                         </div>
                     </div>
                     <div class="input-wrapper span-2">
                         <label>Scholarships/Academic Honors Received</label>
-                        <input type="text" v-model="internalForm.educations[0].scholarships" />
+                        <input type="text" v-model="educations.scholarships" />
                     </div>
                     <div>
                         <label>Year Graduated</label>
-                        <input type="text" v-model="internalForm.educations[0].year_graduated" />
+                        <input type="text" v-model="educations.year_graduated" />
                     </div>
                     <div>
                         <label>Highest Level/Units Earned</label>
-                        <input type="text" v-model="internalForm.educations[0].highest_level_units" />
+                        <input type="text" v-model="educations.highest_level_units" />
                     </div>
                     <div class="input-wrapper span-2">
                         <label>Basic Educational Degree/Course</label>
-                        <input type="text" v-model="internalForm.educations[0].degree_course" />
+                        <input type="text" v-model="educations.degree_course" />
                     </div>
+                    <img src="images/icons/close.png" @click.prevent="removeEducation(idx)"/>
                 </div>
+                <Button class="btn-add-education" variant="secondary" @click.prevent="addEducation">
+                    <img src="images/icons/plus.png"/>
+                </Button>
             </div>
 
             <div v-else-if="activeTab === 'eligibility'">
@@ -555,7 +559,10 @@
     </template>
     <script setup>
         import Button from "@/components/Common/Button.vue";
+        import { useValidation } from "../../Composables/useValidation";
         import { reactive, watch } from "vue";
+
+        const { fieldRules, rulesPerTab } = useValidation();
 
         defineProps({
             activeTab: {
@@ -684,6 +691,39 @@
         }
         function removeChild(index) {
             internalForm.children.splice(index, 1);
+        }
+
+        function addEducation() {
+            const index = internalForm.educations.length;
+            internalForm.educations.push({
+                highest_educational_attainment: "",
+                school_name: "",
+                attendance_from: "",
+                attendance_to: "",
+                scholarships: "",
+                year_graduated: "",
+                highest_level_units: "",
+                degree_course: ""
+            });
+
+            console.log(index)
+
+            const schoolKey = `educations[${index}].school_name`;
+            const attainmentKey = `educations[${index}].highest_educational_attainment`;
+
+            fieldRules[schoolKey] = [(v) => !!v || "School name is required."];
+            fieldRules[attainmentKey] = [(v) => !!v || "Highest educational attainment is required."];
+
+            rulesPerTab.education.push(schoolKey);
+            rulesPerTab.education.push(attainmentKey);
+
+            console.log(fieldRules)
+            console.log(rulesPerTab)
+            console.log(internalForm.educations)
+
+        }
+        function removeEducation(index) {
+            internalForm.educations.splice(index, 1)
         }
 
         function addReference() {
