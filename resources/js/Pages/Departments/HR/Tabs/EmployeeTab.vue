@@ -4,6 +4,7 @@ import Button from "@/Components/Common/Button.vue";
 import employeeService from "@/Services/employeeService";
 import PDSFormModal from '@/Components/PDS/PDSFormModal.vue';
 import Tooltip from "@/Components/Common/Tooltip.vue";
+import Input from "@/Components/Common/Input.vue";
 
 const employees = ref([]);
 const search = ref("");
@@ -42,11 +43,12 @@ const filteredEmployees = computed(() =>
 <template>
   <section id="employee">
     <div class="employee-header">
-      <input
-        type="text"
-        v-model="search"
-        placeholder="Search employee ..."
-        class="search-bar"
+      <Input
+        class="search-inp" 
+        v-model="search" 
+        name="search" 
+        placeholder="Search Employee..." 
+        size="md" 
       />
       <Button variant="primary" @click="openAddEmployee">
         <img class="icon" src="images/icons/plus.png"/> Add Employee
@@ -54,7 +56,7 @@ const filteredEmployees = computed(() =>
     </div>
 
     <div class="employee-table-wrapper">
-      <table class="employee-table">
+      <table>
         <thead>
           <tr>
             <th>Name</th>
@@ -76,15 +78,15 @@ const filteredEmployees = computed(() =>
             <td>{{ emp.citizenship }}</td>
             <td>
               <Tooltip text="View Details" placement="top">
-                <Button variant="secondary" size="xs">
+                <Button class="btn-action" variant="secondary" size="xs">
                   <img class="icon" src="images/icons/view.png"/>
                 </Button>
               </Tooltip>
               
-              <Button variant="secondary" size="xs">
+              <Button class="btn-action" variant="secondary" size="xs">
                 <img class="icon" src="images/icons/edit.png"/>
               </Button>
-              <Button variant="secondary" size="xs">
+              <Button class="btn-action" variant="secondary" size="xs">
                 <img class="icon" src="images/icons/delete.png"/>
               </Button>
             </td>

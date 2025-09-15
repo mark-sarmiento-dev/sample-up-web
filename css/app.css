@@ -521,6 +521,9 @@ input:focus {
   margin-right: 2px;
   filter: brightness(0) invert(1);
 }
+.employee-header .search-inp {
+  width: 30%;
+}
 
 .search-bar {
   padding: 8px 12px;
@@ -542,41 +545,35 @@ input:focus {
   width: 100%;
   overflow-x: auto; /* Enables horizontal scroll */
 }
-
-.employee-table {
+.employee-table-wrapper table {
   min-width: 700px; /* Prevents table from squishing too much */
   border-collapse: collapse;
   width: 100%;
 }
-
-.employee-table th,
-.employee-table td {
+.employee-table-wrapper table th,
+.employee-table-wrapper table td {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #e2e2e2;
   font-size: 14px;
   color: #6e6d6d;
 }
-
-.employee-table th {
+.employee-table-wrapper table th {
   background-color: #e9e9e9;
   color: #555;
   font-weight: bold;
   font-size: 15px;
 }
-
-.employee-table tr {
+.employee-table-wrapper table tr {
   background-color: #f5f5f5;
 }
-
-.employee-table .icon {
+.employee-table-wrapper table .icon {
   width: 22px;
   height: 22px;
   object-fit: contain;
   padding: 2px;
 }
-
-.employee-table button {
+.employee-table-wrapper table .btn-action {
   margin-right: 4px;
 }
 
@@ -1145,6 +1142,74 @@ main.login-container .toggle-password img {
   width: 30px;
   height: 30px;
   margin-right: 8px;
+}
+
+/* employee style */
+.account-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.account-header .icon {
+  width: 11px;
+  height: 11px;
+  margin-right: 2px;
+  filter: brightness(0) invert(1);
+}
+.account-header .search-inp {
+  width: 30%;
+}
+
+.search-bar {
+  padding: 8px 12px;
+  width: 250px;
+  border: 1px solid #eaeaea;
+  font-size: 14px;
+}
+
+.add-btn {
+  background-color: #ffffff;
+  color: #4a4a4a;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  border: 1px solid #6e6d6d;
+}
+
+.account-table-wrapper {
+  width: 100%;
+  overflow-x: auto; /* Enables horizontal scroll */
+}
+.account-table-wrapper table {
+  min-width: 700px; /* Prevents table from squishing too much */
+  border-collapse: collapse;
+  width: 100%;
+}
+.account-table-wrapper table th,
+.account-table-wrapper table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #e2e2e2;
+  font-size: 14px;
+  color: #6e6d6d;
+}
+.account-table-wrapper table th {
+  background-color: #e9e9e9;
+  color: #555;
+  font-weight: bold;
+  font-size: 15px;
+}
+.account-table-wrapper table tr {
+  background-color: #f5f5f5;
+}
+.account-table-wrapper table .icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  padding: 2px;
+}
+.account-table-wrapper table .btn-action {
+  margin-right: 4px;
 }
 
 :root {
