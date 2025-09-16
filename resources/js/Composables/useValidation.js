@@ -4,7 +4,7 @@ export function useValidation() {
     const errors = reactive({});
 
     // Rules per field
-    const fieldRules = {
+    const fieldRules = reactive({
         // Personal Information
         first_name: [
             (v) => !!v || "First name is required.", 
@@ -127,10 +127,10 @@ export function useValidation() {
         "references[0].fullname": [],
         "references[0].address": [],
         "references[0].telephone_no": [],
-    };
+    });
 
     // Rules grouped by tab
-    const rulesPerTab = {
+    const rulesPerTab = reactive({
         personal: [
             "first_name", 
             "last_name", 
@@ -173,7 +173,7 @@ export function useValidation() {
         other: [
             "other_infos[0].membership"
         ],
-    };
+    });
 
     // Validate a single field
     function validateField(name, value) {
@@ -218,6 +218,7 @@ export function useValidation() {
         errors,
         validateField,
         validateTab,
-        rulesPerTab
+        rulesPerTab,
+        fieldRules
     };
 }

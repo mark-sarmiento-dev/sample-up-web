@@ -1,6 +1,4 @@
-@charset "UTF-8";
-.modal {
-  position: fixed;
+/*# sourceMappingURL=app.css.map */on: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -276,7 +274,7 @@
 
 .card {
   background: #ffffff;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1) !important;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -485,6 +483,32 @@
   border-color: transparent #5b5b5b transparent transparent;
 }
 
+input {
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #333;
+}
+
+.input-sm {
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+.input-md {
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.input-lg {
+  padding: 12px 14px;
+  font-size: 16px;
+}
+
 /* employee style */
 .employee-header {
   display: flex;
@@ -496,6 +520,9 @@
   height: 11px;
   margin-right: 2px;
   filter: brightness(0) invert(1);
+}
+.employee-header .search-inp {
+  width: 30%;
 }
 
 .search-bar {
@@ -514,81 +541,40 @@
   border: 1px solid #6e6d6d;
 }
 
-/* .add-btn:hover {
-        background-color: #333;
-      } */
 .employee-table-wrapper {
   width: 100%;
   overflow-x: auto; /* Enables horizontal scroll */
 }
-
-.employee-table {
+.employee-table-wrapper table {
   min-width: 700px; /* Prevents table from squishing too much */
   border-collapse: collapse;
   width: 100%;
 }
-
-.employee-table th,
-.employee-table td {
+.employee-table-wrapper table th,
+.employee-table-wrapper table td {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #e2e2e2;
   font-size: 14px;
   color: #6e6d6d;
 }
-
-.employee-table th {
+.employee-table-wrapper table th {
   background-color: #e9e9e9;
   color: #555;
   font-weight: bold;
   font-size: 15px;
 }
-
-.employee-table tr {
+.employee-table-wrapper table tr {
   background-color: #f5f5f5;
 }
-
-.employee-table .icon {
+.employee-table-wrapper table .icon {
   width: 22px;
   height: 22px;
   object-fit: contain;
   padding: 2px;
 }
-
-.employee-table button {
+.employee-table-wrapper table .btn-action {
   margin-right: 4px;
-}
-
-.action-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  margin-right: 8px;
-}
-
-.pagination {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-  font-size: 14px;
-}
-
-.pagination button {
-  background: #ffffff;
-  color: #4a4a4a;
-  border: none;
-  padding: 6px 12px;
-  cursor: pointer;
-  border: 1px solid #eaeaea;
-}
-
-input:focus {
-  outline: none; /* tanggalin ang default outline */
-  border: 1px solid #ccc; /* same border color sa normal state */
-  border-radius: 0; /* tanggalin ang border radius */
 }
 
 .modal-body {
@@ -698,6 +684,23 @@ input:focus {
 .modal-body .voluntary-form-grid .inclusive-date,
 .modal-body .training-form-grid .inclusive-date {
   grid-column: span 2;
+}
+.modal-body .education-form-grid + .education-form-grid {
+  margin-top: 40px;
+}
+.modal-body .education-form-grid {
+  position: relative;
+}
+.modal-body .education-form-grid img {
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  right: 0;
+  top: -10px;
+}
+.modal-body .btn-add-education img {
+  height: 12px;
+  width: 12px;
 }
 .modal-body .other-form-grid .references {
   grid-column: span 4;
@@ -1120,6 +1123,95 @@ main.login-container .toggle-password img {
     transform: translateX(0);
   }
 }
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.cards-container a {
+  text-decoration: none;
+}
+.cards-container .card-header {
+  color: #5b5b5b;
+}
+.cards-container .card-header div {
+  display: flex;
+  align-items: center;
+}
+.cards-container .card-header img {
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
+}
+
+/* employee style */
+.account-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.account-header .icon {
+  width: 11px;
+  height: 11px;
+  margin-right: 2px;
+  filter: brightness(0) invert(1);
+}
+.account-header .search-inp {
+  width: 30%;
+}
+
+.search-bar {
+  padding: 8px 12px;
+  width: 250px;
+  border: 1px solid #eaeaea;
+  font-size: 14px;
+}
+
+.add-btn {
+  background-color: #ffffff;
+  color: #4a4a4a;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  border: 1px solid #6e6d6d;
+}
+
+.account-table-wrapper {
+  width: 100%;
+  overflow-x: auto; /* Enables horizontal scroll */
+}
+.account-table-wrapper table {
+  min-width: 700px; /* Prevents table from squishing too much */
+  border-collapse: collapse;
+  width: 100%;
+}
+.account-table-wrapper table th,
+.account-table-wrapper table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #e2e2e2;
+  font-size: 14px;
+  color: #6e6d6d;
+}
+.account-table-wrapper table th {
+  background-color: #e9e9e9;
+  color: #555;
+  font-weight: bold;
+  font-size: 15px;
+}
+.account-table-wrapper table tr {
+  background-color: #f5f5f5;
+}
+.account-table-wrapper table .icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  padding: 2px;
+}
+.account-table-wrapper table .btn-action {
+  margin-right: 4px;
+}
+
 :root {
   --color-primary: #5b5b5b;
   --color-primary-hover: #4a4a4a;

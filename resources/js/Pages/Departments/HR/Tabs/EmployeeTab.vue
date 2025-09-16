@@ -67,6 +67,7 @@ import employeeService from "@/Services/employeeService";
 import PDSFormModal from '@/Components/PDS/PDSFormModal.vue';
 import PDSFormViewModal from '@/Components/PDS/View/PDSFormViewModal.vue';
 import Tooltip from "@/Components/Common/Tooltip.vue";
+import Input from "@/Components/Common/Input.vue";
 
 const employees = ref([]);
 const search = ref("");
@@ -117,5 +118,3 @@ const filteredEmployees = computed(() =>
   )
 );
 </script>
-
-

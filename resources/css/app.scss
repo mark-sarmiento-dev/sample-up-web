@@ -5,6 +5,7 @@
 @use 'components/componentCard';
 @use 'components/componentDropdown';
 @use 'components/componentTooltip';
+@use 'components/componentInput';
 
 // Layouts
 @use 'layouts/layoutEmployeeTab';
@@ -13,6 +14,8 @@
 @use 'layouts/layoutDashboard';
 @use 'layouts/layoutHeader';
 @use 'layouts/layoutSidebar';
+@use 'layouts/layoutDashboardTab';
+@use 'layouts/layoutAccountTab';
 
 :root {
     --color-primary: #5b5b5b;

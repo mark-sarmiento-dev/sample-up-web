@@ -219,4 +219,3 @@ function removeReference(index) {
     internalForm.references.splice(index, 1);
 }
 </script>
-
