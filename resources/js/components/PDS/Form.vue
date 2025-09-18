@@ -1,63 +1,36 @@
 <template>
     <form class="form-section">
-        <PersonalDetails
-            v-if="activeTab === 'personal'"
-            :internalForm="internalForm"
-            :errors="errors"
-        />
+        <div v-show="activeTab === 'personal'">
+            <PersonalDetails :internalForm="internalForm" />
+        </div>
 
-        <FamilyBackground
-            v-if="activeTab === 'family'"
-            :internalForm="internalForm"
-            :errors="errors"
-            :validateField="validateField"
-            :addChild="addChild"
-            :removeChild="removeChild"
-        />
+        <div v-show="activeTab === 'family'">
+            <FamilyBackground :internalForm="internalForm" />
+        </div>
 
-        <EducationBackground
-            v-if="activeTab === 'education'"
-            :internalForm="internalForm"
-            :errors="errors"
-            :validateField="validateField"
-        />
+        <div v-show="activeTab === 'education'">
+            <EducationBackground :internalForm="internalForm" />
+        </div>
 
-        <CivilServiceEligibility
-            v-if="activeTab === 'eligibility'"
-            :internalForm="internalForm"
-            :errors="errors"
-            :validateField="validateField"
-        />
+        <div v-show="activeTab === 'eligibility'">
+            <CivilServiceEligibility :internalForm="internalForm" />
+        </div>
 
-        <WorkExperience
-            v-if="activeTab === 'work'"
-            :internalForm="internalForm"
-            :errors="errors"
-            :validateField="validateField"
-        />
+        <div v-show="activeTab === 'work'">
+            <WorkExperience :internalForm="internalForm" />
+        </div>
 
-            <VoluntaryInvolvement
-            v-if="activeTab === 'voluntary'"
-            :internalForm="internalForm"
-            :errors="errors"
-            :validateField="validateField"
-        />
+        <div v-show="activeTab === 'voluntary'">
+            <VoluntaryInvolvement :internalForm="internalForm" />
+        </div>
 
-            <TrainingAttended
-            v-if="activeTab === 'training'"
-            :internalForm="internalForm"
-            :errors="errors"
-            :validateField="validateField"
-        />
+        <div v-show="activeTab === 'training'">
+            <TrainingAttended :internalForm="internalForm" />
+        </div>
 
-        <OtherRelevantInfo
-            v-if="activeTab === 'other'"
-            :internalForm="internalForm"
-            :errors="errors"
-            :validateField="validateField"
-            :addReference="addReference"
-            :removeReference="removeReference"
-        />
+        <div v-show="activeTab === 'other'">
+            <OtherRelevantInfo :internalForm="internalForm" />
+        </div>
     </form>
 </template>
 

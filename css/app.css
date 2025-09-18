@@ -552,7 +552,7 @@ input:focus {
 }
 .employee-table-wrapper table th,
 .employee-table-wrapper table td {
-  padding: 10px;
+  padding: 6px;
   text-align: left;
   border-bottom: 1px solid #e2e2e2;
   font-size: 14px;
@@ -575,6 +575,7 @@ input:focus {
 }
 .employee-table-wrapper table .btn-action {
   margin-right: 4px;
+  border-radius: 4px;
 }
 
 .modal-body {
@@ -613,6 +614,7 @@ input:focus {
   cursor: pointer;
   font-size: 13px;
   color: #666;
+  display: flex;
 }
 .modal-body .pds-nav li:hover, .modal-body .pds-nav li.active {
   background: #eaeaea;
@@ -620,6 +622,13 @@ input:focus {
   font-weight: bold;
 }
 .modal-body .pds-nav li img {
+  height: 15px;
+  width: 15px;
+}
+.modal-body .pds-nav li .tabs-status {
+  margin-left: 4px;
+}
+.modal-body .pds-nav li .tabs-status img {
   height: 15px;
   width: 15px;
 }
@@ -697,6 +706,9 @@ input:focus {
   width: 12px;
   right: 0;
   top: -10px;
+}
+.modal-body .btn-add-education {
+  margin-top: 15px;
 }
 .modal-body .btn-add-education img {
   height: 12px;
@@ -1187,7 +1199,7 @@ main.login-container .toggle-password img {
 }
 .account-table-wrapper table th,
 .account-table-wrapper table td {
-  padding: 10px;
+  padding: 6px;
   text-align: left;
   border-bottom: 1px solid #e2e2e2;
   font-size: 14px;
@@ -1210,6 +1222,7 @@ main.login-container .toggle-password img {
 }
 .account-table-wrapper table .btn-action {
   margin-right: 4px;
+  border-radius: 4px;
 }
 
 :root {
@@ -1238,4 +1251,8 @@ html, body {
 }
 html .modal-open, body .modal-open {
   overflow: hidden;
+}
+
+.tab-invalid {
+  color: #d62323;
 }/*# sourceMappingURL=app.css.map */

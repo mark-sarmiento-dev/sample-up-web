@@ -56,4 +56,5 @@
 <script setup>
 import Button from "@/Components/Common/Button.vue";
 import Input from "@/Components/Common/Input.vue";
+import Tooltip from "@/Components/Common/Tooltip.vue";
 </script>

@@ -8,18 +8,21 @@
                         :key="index"
                         :class="{
                             active: activeTab === tab.key,
-                            'tab-valid': tabIsValid(tab.key)
+                            
                         }"
                             @click="activeTab = tab.key"
                         >
                         {{ tab.label }}
-                        <span v-if="tabIsValid(tab.key)">&#10003;</span>
+                        <span class="tabs-status" v-if="tabStatus[tab.key]">
+                            <img v-if="tabStatus[tab.key] === 'warning'" src="images/icons/warning.png" />
+                            <img v-else-if="tabStatus[tab.key] === 'valid'" src="images/icons/check-circle.png" />
+                        </span>
                     </li>
                 </ul>
             </nav>
 
             <!-- Form Section -->
-            <Form :active-tab="activeTab" v-model:formData="formData" :errors="errors" :validateField="validateField"/>
+            <Form :active-tab="activeTab" v-model:formData="formData"/>
         </div>
 
         <template #footer>
@@ -28,7 +31,7 @@
             <Button
                 variant="primary"
                 size="md"
-                @click="goNextTab"
+                @click="onNextTab"
             >
                 {{ currentTabIndex === tabs.length - 1 ? "Submit" : "Next" }}
             </Button>
@@ -42,11 +45,22 @@ import Modal from "@/components/Common/Modal.vue";
 import Form from "@/components/PDS/Form.vue";
 import Button from "../Common/Button.vue";
 import employeeService from "@/services/employeeService.js";
-import { useValidation } from "../../Composables/useValidation";
+import { usePdsValidation } from "@/Composables/Validation/usePdsValidation.js";
 import notify from "@/Services/NotificationService.js";
 
+// Define props
+const props = defineProps({
+    formData: {
+        type: Object,
+        default: () => ({})
+    }
+});
+
+// const formData = ref({ ...(props.formData || {})});
+
 const showModal = ref(false);
-const { errors, validateField, validateTab, rulesPerTab } = useValidation();
+const activeTab = ref("personal");
+const emit = defineEmits(["saved"]);
 
 const tabs = [
     { key: "personal", label: "Personal Details" },
@@ -56,16 +70,13 @@ const tabs = [
     { key: "work", label: "Work Experience" },
     { key: "voluntary", label: "Voluntary Involvement" },
     { key: "training", label: "Training Attended" },
-    { key: "other", label: "Other Relevant Information" },
+    { key: "other", label: "Other Information" },
 ];
 
-const activeTab = ref("personal");
-
-const formData = ref({});
-
-const emit = defineEmits(["saved"]);
-
-const validatedTabs = ref(new Set())
+const { handleSubmit, validate, validateAllTabs, formData } = usePdsValidation(
+    activeTab, 
+    props.formData || {}
+);
 
 const currentTabIndex = computed(() =>
   tabs.findIndex((tab) => tab.key === activeTab.value)
@@ -163,14 +174,14 @@ function buildPayload(f) {
     // education(s)
     if (Array.isArray(f.educations) && f.educations.length) {
         payload.educations = f.educations.map(e => ({
-            level: e.level || "",
+            highest_educational_attainment: e.highest_educational_attainment || "",
             school_name: e.school_name || "",
             degree_course: e.degree_course || "",
             year_graduated: e.year_graduated || "",
-            highest_units_earned: e.highest_units_earned || "",
-            period_from: e.period_from || "",
-            period_to: e.period_to || "",
-            honors: e.honors || ""
+            highest_level_units: e.highest_level_units || "",
+            attendance_from: e.attendance_from || "",
+            attendance_to: e.attendance_to || "",
+            scholarships: e.scholarships || ""
         }));
     }
 
@@ -243,50 +254,62 @@ function buildPayload(f) {
     return payload;
 }
 
-function goNextTab() {
-    const currentKey = activeTab.value;
-    const valid = validateTab(currentKey, formData.value);
-
-    if (!valid) {
-        notify("warning", "Cannot proceed, Please fill the required fields.");
-        return;
-    }
-
-    validatedTabs.value.add(currentKey)
-
-    const nextIndex = currentTabIndex.value + 1;
-
-    if (nextIndex < tabs.length) {
-        activeTab.value = tabs[nextIndex].key;
-    } else {
-        const allValid = tabs.every(tab => validateTab(tab.key, formData.value))
-        if (!allValid) {
-            notify("warning", "Please complete all required fields in every tab before submitting.")
-            return;
-        }
-        handleSave();
-    }
-}
-
-function tabIsValid(tabKey) {
-    if (!validatedTabs.value.has(tabKey)) return false;  // not yet validated
-
-    const requiredFields = rulesPerTab[tabKey] || [];
-
-    return requiredFields.every((field) => !errors[field]);
-}
-
-// Remove error message upon typing if valid
-watch(
-    () => formData.value,
-    (newVal) => {
-        for (const key in newVal) {
-            validateField(key, newVal[key]);
-        }
-    },
-    { deep: true }
+const tabStatus = ref(
+    tabs.reduce((acc, tab) => {
+        acc[tab.key] = ''; 
+        return acc;
+    }, {})
 );
 
+async function onNextTab() {
+    const { valid } = await validate()
+
+    if (!valid) {
+        tabStatus.value[activeTab.value] = 'warning'; // mark current tab
+        notify("warning", "Please fill the required fields before proceeding.")
+        return
+    }
+
+    tabStatus.value[activeTab.value] = 'valid'; // mark current tab as valid
+
+    const nextIndex = currentTabIndex.value + 1
+
+    if (nextIndex < tabs.length) {
+        activeTab.value = tabs[nextIndex].key
+    } else {
+        // Final check before submission
+        const { valid: allValid, invalidTabs } = await validateAllTabs(formData.value)
+
+        tabs.forEach(tab => {
+            tabStatus.value[tab.key] = invalidTabs.includes(tab.key) ? 'warning' : 'valid'
+        });
+
+        if (!allValid) {
+            // notify("warning", `Some information are incomplete: ${invalidTabs.join(", ")}`)
+            notify("warning", `Please complete all the required information before proceeding.`)
+            return;
+        }
+
+        handleSubmit(onSubmit)()
+    }
+}
+
+async function onSubmit(values) {
+    const data = values;
+    
+    console.log("Final Submit:", data);
+}
+
+// Watch for prop changes and update formData
+watch(
+    () => props.formData,
+    (newVal) => {
+        if (newVal) {
+            formData.value = { ...newVal };
+        }
+    },
+    { immediate: true, deep: true }
+);
 
 async function handleSave() {
     console.log("save!");

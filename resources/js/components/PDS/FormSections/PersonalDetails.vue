@@ -2,163 +2,223 @@
     <h3>Personal Details</h3>
     <div class="personal-form-grid">
         <div class="personal-info">
-        <div>
-            <label>Lastname</label>
-            <input type="text" v-model="internalForm.last_name" />
-            <span v-if="errors.last_name" class="error input-error-msg">{{ errors.last_name }}</span>
-        </div>
-        <div>
-            <label>Firstname</label>
-            <input type="text" v-model="internalForm.first_name" />
-            <span v-if="errors.first_name" class="error input-error-msg">{{ errors.first_name }}</span>
-        </div>
-        <div>
-            <label>Middlename</label>
-            <input type="text" v-model="internalForm.middle_name" />
-            <span v-if="errors.middle_name" class="error input-error-msg">{{ errors.middle_name }}</span>
-        </div>
-        <div>
-            <label>Suffix (e.g., Jr., Sr., II)</label>
-            <input type="text" v-model="internalForm.name_extension" />
-            <span v-if="errors.name_extension" class="error input-error-msg">{{ errors.name_extension }}</span>
-        </div>
-        <div>
-            <label>Date of Birth</label>
-            <input type="date" v-model="internalForm.birth_date" />
-            <span v-if="errors.birth_date" class="error input-error-msg">{{ errors.birth_date }}</span>
-        </div>
-        <div class="input-wrapper span-3">
-            <label>Place of Birth</label>
-            <input type="text" v-model="internalForm.place_of_birth" />
-            <span v-if="errors.place_of_birth" class="error input-error-msg">{{ errors.place_of_birth }}</span>
-        </div>
-        <div>
-            <label>Sex</label>
-            <select v-model="internalForm.sex">
-            <option value="">Select</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            </select>
-            <span v-if="errors.sex" class="error input-error-msg">{{ errors.sex }}</span>
-        </div>
-        <div>
-            <label>Civil Status</label>
-            <input type="text" v-model="internalForm.civil_status" />
-            <span v-if="errors.civil_status" class="error input-error-msg">{{ errors.civil_status }}</span>
-        </div>
-        <div>
-            <label>Height (cm)</label>
-            <input type="text" v-model="internalForm.height" />
-            <span v-if="errors.height" class="error input-error-msg">{{ errors.height }}</span>
-        </div>
-        <div>
-            <label>Weight (kg)</label>
-            <input type="text" v-model="internalForm.weight" />
-            <span v-if="errors.weight" class="error input-error-msg">{{ errors.weight }}</span>
-        </div>
-        <div>
-            <label>Blood Type</label>
-            <input type="text" v-model="internalForm.blood_type" />
-            <span v-if="errors.blood_type" class="error input-error-msg">{{ errors.blood_type }}</span>
-        </div>
+            <div>
+                <label>Lastname</label>
+                <Field name="last_name" v-model="internalForm.last_name" v-slot="{ field }">
+                    <input type="text" v-bind="field" />
+                </Field>
+                <ErrorMessage name="last_name" class="input-error-msg" />
+            </div>
+            <div>
+                <label>Firstname</label>
+                <Field name="first_name" v-model="internalForm.first_name" v-slot="{ field }">
+                    <input type="text" v-bind="field" />
+                </Field>
+                <ErrorMessage name="first_name" class="input-error-msg" />
+            </div>
+            <div>
+                <label>Middlename</label>
+                <Field name="middle_name" v-model="internalForm.middle_name" v-slot="{ field }">
+                    <input type="text" v-bind="field" />
+                </Field>
+                <ErrorMessage name="middle_name" class="input-error-msg" />
+            </div>
+            <div>
+                <label>Suffix (e.g., Jr., Sr., II)</label>
+                <Field name="name_extension" v-model="internalForm.name_extension" v-slot="{ field }">
+                    <input type="text" v-bind="field" />
+                </Field>
+                <ErrorMessage name="name_extension" class="input-error-msg" />
+            </div>
+            <div>
+                <label>Date of Birth</label>
+                <Field name="birth_date" v-model="internalForm.birth_date" v-slot="{ field }">
+                    <input type="date" v-bind="field" />
+                </Field>
+                <ErrorMessage name="birth_date" class="input-error-msg" />
+            </div>
+            <div class="input-wrapper span-3">
+                <label>Place of Birth</label>
+                <Field name="place_of_birth" v-model="internalForm.place_of_birth" v-slot="{ field }">
+                    <input type="text" v-bind="field" />
+                </Field>
+                <ErrorMessage name="place_of_birth" class="input-error-msg" />
+            </div>
+            <div>
+                <label>Sex</label>
+                <Field name="sex" v-model="internalForm.sex" v-slot="{ field }">
+                    <select v-bind="field">
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </Field>
+                <ErrorMessage name="sex" class="input-error-msg" />
+            </div>
+            <div>
+                <label>Civil Status</label>
+                <Field name="civil_status" v-model="internalForm.civil_status" v-slot="{ field }">
+                    <input type="text" v-bind="field" />
+                </Field>
+                <ErrorMessage name="civil_status" class="input-error-msg" />
+            </div>
+            <div>
+                <label>Height (cm)</label>
+                <Field name="height" v-model="internalForm.height" v-slot="{ field }">
+                    <input type="text" v-bind="field"  />
+                </Field>
+                <ErrorMessage name="height" class="input-error-msg" />
+            </div>
+            <div>
+                <label>Weight (kg)</label>
+                <Field name="weight" v-model="internalForm.weight" v-slot="{ field }">
+                    <input type="text" v-bind="field" />
+                </Field>
+                <ErrorMessage name="weight" class="input-error-msg" />
+            </div>
+            <div>
+                <label>Blood Type</label>
+                <Field name="blood_type" v-model="internalForm.blood_type" v-slot="{ field }">
+                    <input type="text" v-bind="field" />
+                </Field>
+                <ErrorMessage name="blood_type" class="input-error-msg" />
+            </div>
         </div>
 
         <div class="govt-info">
         <div>
             <label>GSIS ID No.</label>
-            <input type="text" v-model="internalForm.gsis_id_no" />
-            <span v-if="errors.gsis_id_no" class="error input-error-msg">{{ errors.gsis_id_no }}</span>
+            <Field name="gsis_id_no" v-model="internalForm.gsis_id_no" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="gsis_id_no" class="input-error-msg" />
         </div>
         <div>
             <label>Pag-Ibig ID No.</label>
-            <input type="text" v-model="internalForm.pagibig_id_no" />
-            <span v-if="errors.pagibig_id_no" class="error input-error-msg">{{ errors.pagibig_id_no }}</span>
+            <Field name="pagibig_id_no" v-model="internalForm.pagibig_id_no" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="pagibig_id_no" class="input-error-msg" />
         </div>
         <div>
             <label>Phil-Health No.</label>
-            <input type="text" v-model="internalForm.philhealth_no" />
-            <span v-if="errors.philhealth_no" class="error input-error-msg">{{ errors.philhealth_no }}</span>
+            <Field name="philhealth_no" v-model="internalForm.philhealth_no" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="philhealth_no" class="input-error-msg" />
         </div>
         <div>
             <label>SSS No.</label>
-            <input type="text" v-model="internalForm.sss_no" />
-            <span v-if="errors.sss_no" class="error input-error-msg">{{ errors.sss_no }}</span>
+            <Field name="sss_no" v-model="internalForm.sss_no" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="sss_no" class="input-error-msg" />
         </div>
         <div>
             <label>Tin No.</label>
-            <input type="text" v-model="internalForm.tin_no" />
-            <span v-if="errors.tin_no" class="error input-error-msg">{{ errors.tin_no }}</span>
+            <Field name="tin_no" v-model="internalForm.tin_no" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="tin_no" class="input-error-msg" />
         </div>
         <div>
             <label>Agency Employee No.</label>
-            <input type="text" v-model="internalForm.agency_employee_no" />
-            <span v-if="errors.agency_employee_no" class="error input-error-msg">{{ errors.agency_employee_no }}</span>
+            <Field name="agency_employee_no" v-model="internalForm.agency_employee_no" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="agency_employee_no" class="input-error-msg" />
         </div>
         <div>
             <label>Citizenship</label>
-            <input type="text" v-model="internalForm.citizenship" />
-            <span v-if="errors.citizenship" class="error input-error-msg">{{ errors.citizenship }}</span>
+            <Field name="citizenship" v-model="internalForm.citizenship" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="citizenship" class="input-error-msg" />
         </div>
         </div>
 
         <div class="contact-address-info">
         <div class="input-wrapper span-3">
             <label>Residential Address</label>
-            <input type="text" v-model="internalForm.residential_address" />
-            <span v-if="errors.residential_address" class="error input-error-msg">{{ errors.residential_address }}</span>
+            <Field name="residential_address" v-model="internalForm.residential_address" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="residential_address" class="input-error-msg" />
         </div>
         <div>
             <label>Residential Zip</label>
-            <input type="text" v-model="internalForm.residential_zip" />
-            <span v-if="errors.residential_zip" class="error input-error-msg">{{ errors.residential_zip }}</span>
+            <Field name="residential_zip" v-model="internalForm.residential_zip" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="residential_zip" class="input-error-msg" />
         </div>
         <div class="input-wrapper span-3">
             <label>Permanent Address</label>
-            <input type="text" v-model="internalForm.permanent_address" />
-            <span v-if="errors.permanent_address" class="error input-error-msg">{{ errors.permanent_address }}</span>
+            <Field name="permanent_address" v-model="internalForm.permanent_address" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="permanent_address" class="input-error-msg" />
         </div>
         <div>
             <label>Permanent Zip</label>
-            <input type="text" v-model="internalForm.permanent_zip" />
-            <span v-if="errors.permanent_address" class="error input-error-msg">{{ errors.permanent_address }}</span>
+            <Field name="permanent_zip" v-model="internalForm.permanent_zip" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="permanent_zip" class="input-error-msg" />
         </div>
         <div class="input-wrapper span-2">
             <label>Email Address</label>
-            <input type="text" v-model="internalForm.email" />
-            <span v-if="errors.email" class="error input-error-msg">{{ errors.email }}</span>
+            <Field name="email" v-model="internalForm.email" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="email" class="input-error-msg" />
         </div>
         <div>
             <label>Telephone No.</label>
-            <input type="text" v-model="internalForm.telephone_no" />
-            <span v-if="errors.telephone_no" class="error input-error-msg">{{ errors.telephone_no }}</span>
+            <Field name="telephone_no" v-model="internalForm.telephone_no" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="telephone_no" class="input-error-msg" />
         </div>
         <div>
             <label>Mobile No.</label>
-            <input type="text" v-model="internalForm.mobile_no" />
-            <span v-if="errors.mobile_no" class="error input-error-msg">{{ errors.mobile_no }}</span>
+            <Field name="mobile_no" v-model="internalForm.mobile_no" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="mobile_no" class="input-error-msg" />
         </div>
         <div class="input-wrapper span-2">
             <label>CTC Place of Issuance</label>
-            <input type="text" v-model="internalForm.ctc_place_of_issuance" />
-            <span v-if="errors.ctc_place_of_issuance" class="error input-error-msg">{{ errors.ctc_place_of_issuance }}</span>
+            <Field name="ctc_place_of_issuance" v-model="internalForm.ctc_place_of_issuance" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="ctc_place_of_issuance" class="input-error-msg" />
         </div>
         <div>
             <label>CTC No.</label>
-            <input type="text" v-model="internalForm.ctc_number" />
-            <span v-if="errors.ctc_number" class="error input-error-msg">{{ errors.ctc_number }}</span>
+            <Field name="ctc_number" v-model="internalForm.ctc_number" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="ctc_number" class="input-error-msg" />
         </div>
         <div>
             <label>CTC Date of Issuance</label>
-            <input type="date" v-model="internalForm.ctc_date_of_issuance" />
-            <span v-if="errors.ctc_date_of_issuance" class="error input-error-msg">{{ errors.ctc_date_of_issuance }}</span>
+            <Field name="ctc_date_of_issuance" v-model="internalForm.ctc_date_of_issuance" v-slot="{ field }">
+                <input type="date" v-bind="field" />
+            </Field>
+            <ErrorMessage name="ctc_date_of_issuance" class="input-error-msg" />
         </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import { Field, ErrorMessage, configure } from 'vee-validate';
 defineProps({
   internalForm: { type: Object, required: true },
-  errors: { type: Object, required: true }
+});
+
+configure({
+  validateOnInput: true
 });
 </script>
