@@ -30,6 +30,7 @@
             cursor: pointer;
             font-size: 13px;
             color: #666;
+            display: flex;
 
             &:hover,
             &.active {
@@ -41,6 +42,15 @@
             img {
                 height: 15px;
                 width: 15px;
+            }
+
+            .tabs-status {
+                margin-left: 4px;
+
+                img {
+                    height: 15px;
+                    width: 15px;
+                }
             }
         }
 
@@ -132,9 +142,14 @@
         }
     }
 
-    .btn-add-education img {
-        height: 12px;
-        width: 12px;
+    .btn-add-education {
+        margin-top: 15px;
+
+        img {
+            height: 12px;
+            width: 12px;
+        }
+        
     }
 
     /* Other Form Specific */

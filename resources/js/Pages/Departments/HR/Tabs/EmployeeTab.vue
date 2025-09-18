@@ -35,12 +35,12 @@
               <td>{{ emp.citizenship }}</td>
               <td>
                 <Tooltip text="View Details" placement="top">
-                  <Button variant="secondary" size="xs" @click="openViewEmployee(emp)">
+                  <Button class="btn-action" variant="secondary" size="xs" @click="openViewEmployee(emp)">
                     <img class="icon" src="images/icons/view.png"/>
                   </Button>
                 </Tooltip>
                 
-                <Button variant="secondary" size="xs" @click="openEditEmployee(emp)">
+                <Button class="btn-action" variant="secondary" size="xs" @click="openEditEmployee(emp)">
                   <img class="icon" src="images/icons/edit.png"/>
                 </Button>
                 <Button variant="secondary" size="xs">

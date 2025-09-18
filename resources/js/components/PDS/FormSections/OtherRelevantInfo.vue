@@ -3,100 +3,86 @@
     <div class="other-form-grid">
         <div class="input-wrapper span-2">
             <label>Special Skill/Hobbies</label>
-            <input type="text" v-model="internalForm.other_infos[0].special_skills" />
+            <Field name="other_infos[0].special_skills" v-model="internalForm.other_infos[0].special_skills" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="other_infos[0].special_skills" class="input-error-msg" />
         </div>
-
         <div class="input-wrapper span-2">
             <label>None-Academic Distinctions/Recognition</label>
-            <input type="text" v-model="internalForm.other_infos[0].distinctions" />
+            <Field name="other_infos[0].distinctions" v-model="internalForm.other_infos[0].distinctions" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="other_infos[0].distinctions" class="input-error-msg" />
         </div>
 
         <div class="input-wrapper span-2">
             <label>Membership in Association/Organization</label>
-            <input
-            type="text"
-            v-model="internalForm.other_infos[0].membership"
-            @input="
-                validateField(
-                'other_infos[0].membership',
-                internalForm.other_infos[0].membership
-                )
-            "
-            />
-            <span
-            v-if="errors['other_infos[0].membership']"
-            class="error input-error-msg"
-            >
-            {{ errors['other_infos[0].membership'] }}
-            </span>
+            <Field name="other_infos[0].membership" v-model="internalForm.other_infos[0].membership" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="other_infos[0].membership" class="input-error-msg" />
         </div>
 
         <div class="input-wrapper span-2">
             <label>Conducted Sponsored By</label>
-            <input type="text" v-model="internalForm.other_infos[0].sponsored_by" />
+            <Field name="other_infos[0].sponsored_by" v-model="internalForm.other_infos[0].sponsored_by" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="other_infos[0].sponsored_by" class="input-error-msg" />
         </div>
 
         <div class="references span-2">
             <label>References (Not related by blood or affinity)</label>
-
-            <div
-            v-for="(ref, idx) in internalForm.references"
-            :key="`ref-${idx}`"
-            class="ref-inputs"
-            >
-            <div>
-                <label>Fullname</label>
-                <input type="text" v-model="ref.fullname" />
-            </div>
-            <div>
-                <label>Telephone No.</label>
-                <input type="text" v-model="ref.telephone_no" />
-            </div>
-            <div class="address-wrapper">
-                <label>Address</label>
-                <input type="text" v-model="ref.address" />
-            </div>
-            <img
-                class="remove-ref-icon"
-                src="images/icons/close.png"
-                @click.prevent="removeReference(idx)"
-            />
-            </div>
-
-            <Button
-            class="btn-add-reference"
-            variant="secondary"
-            @click.prevent="addReference"
-            >
-            <img src="images/icons/plus.png" />
-            </Button>
+            <FieldArray name="references" v-slot="{ fields, remove, push }">
+                <div v-for="(reference, idx) in fields" :key="`ref-${idx}`" class="ref-inputs">
+                    <div>
+                        <label>Fullname</label>
+                        <Field :name="`references[${idx}].name`" v-model="reference.name" v-slot="{ field }">
+                            <input type="text" v-bind="field" />
+                        </Field>
+                        <ErrorMessage :name="`references[${idx}].name`" class="input-error-msg" />
+                    </div>
+                    <div>
+                        <label>Telephone No.</label>
+                        <Field :name="`references[${idx}].telephone_no`" v-model="reference.telephone_no" v-slot="{ field }">
+                            <input type="text" v-bind="field" />
+                        </Field>
+                        <ErrorMessage :name="`references[${idx}].telephone_no`" class="input-error-msg" />
+                    </div>
+                    <div class="address-wrapper">
+                        <label>Address</label>
+                        <Field :name="`references[${idx}].address`" v-model="reference.address" v-slot="{ field }">
+                            <input type="text" v-bind="field" />
+                        </Field>
+                        <ErrorMessage :name="`references[${idx}].address`" class="input-error-msg" />
+                    </div>
+                    <img class="remove-ref-icon" src="images/icons/close.png" @click.prevent="remove(idx)"/>
+                </div>
+                <Button class="btn-add-reference" variant="secondary" @click.prevent="push({ 
+                    name: '', 
+                    telephone_no: '',
+                    address: '' 
+                })">
+                    <img src="images/icons/plus.png" />
+                </Button>
+            </FieldArray>
         </div>
     </div>
 </template>
 
 <script setup>
-import Button from "@/components/Common/Button.vue";
+    import Button from "@/components/Common/Button.vue";
+    import { Field, ErrorMessage, configure, FieldArray } from "vee-validate";
 
-defineProps({
-  internalForm: {
-    type: Object,
-    required: true,
-  },
-  errors: {
-    type: Object,
-    required: true,
-  },
-  validateField: {
-    type: Function,
-    required: true,
-  },
-  addReference: {
-    type: Function,
-    required: true,
-  },
-  removeReference: {
-    type: Function,
-    required: true,
-  },
-});
+    defineProps({
+        internalForm: {
+            type: Object,
+            required: true,
+        },
+    });
+
+    configure({
+        validateOnInput: true,
+    });
 </script>

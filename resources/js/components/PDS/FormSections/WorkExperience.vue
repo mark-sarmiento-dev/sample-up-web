@@ -3,79 +3,76 @@
     <div class="work-form-grid">
         <div class="input-wrapper span-2">
             <label>Position Title (Write in full - no abbreviation)</label>
-            <input
-            type="text"
-            v-model="internalForm.work_experiences[0].position_title"
-            @input="
-                validateField(
-                'work_experiences[0].position_title',
-                internalForm.work_experiences[0].position_title
-                )
-            "
-            />
-            <span
-            v-if="errors['work_experiences[0].position_title']"
-            class="error input-error-msg"
-            >
-            {{ errors['work_experiences[0].position_title'] }}
-            </span>
+            <Field name="work_experiences[0].position_title" v-model="internalForm.work_experiences[0].position_title" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="work_experiences[0].position_title" class="input-error-msg" />
         </div>
 
         <div class="input-wrapper span-2">
             <label>Department/Agency/Office/Company</label>
-            <input type="text" v-model="internalForm.work_experiences[0].agency" />
+            <Field name="work_experiences[0].agency" v-model="internalForm.work_experiences[0].agency" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="work_experiences[0].agency" class="input-error-msg" />
         </div>
 
         <div>
             <label>Monthly Salary</label>
-            <select v-model="internalForm.work_experiences[0].monthly_salary">
-            <option value="">Select</option>
-            <option value="15000-25000">15,000 - 25,000</option>
-            <option value="25000-35000">25,000 - 35,000</option>
-            </select>
+            <Field name="work_experiences[0].monthly_salary" v-model="internalForm.work_experiences[0].monthly_salary" v-slot="{ field }">
+                <input type="text" v-bind="field" placeholder="" />
+            </Field>
+            <ErrorMessage name="work_experiences[0].monthly_salary" class="input-error-msg" />
         </div>
 
         <div>
             <label>Status of Appointment</label>
-            <input type="text" v-model="internalForm.work_experiences[0].status_of_appointment" />
+            <Field name="work_experiences[0].status_of_appointment" v-model="internalForm.work_experiences[0].status_of_appointment" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="work_experiences[0].status_of_appointment" class="input-error-msg" />
         </div>
 
-        <div class="inclusive-date span-2">
+        <div class="input-wrapper span-2">
             <label>Inclusive Date (From - To)</label>
             <div class="date-range">
-            <input
-                type="date"
-                placeholder="From"
-                v-model="internalForm.work_experiences[0].inclusive_from"
-            />
-            <input
-                type="date"
-                placeholder="To"
-                v-model="internalForm.work_experiences[0].inclusive_to"
-            />
+                <div>
+                    <Field name="work_experiences[0].inclusive_from" v-model="internalForm.work_experiences[0].inclusive_from" v-slot="{ field }">
+                        <input type="date" placeholder="From" v-bind="field" />
+                    </Field>
+                    <ErrorMessage name="work_experiences[0].inclusive_from" class="input-error-msg" />
+                </div>
+                <div>
+                    <Field name="work_experiences[0].inclusive_to" v-model="internalForm.work_experiences[0].inclusive_to" v-slot="{ field }">
+                        <input type="date" placeholder="To" v-bind="field" />
+                    </Field>
+                    <ErrorMessage name="work_experiences[0].inclusive_to" class="input-error-msg" />
+                </div>
+                
             </div>
         </div>
 
         <div class="input-wrapper span-2">
             <label>Salary/Job/Pay Grade & Step (if government)</label>
-            <input type="text" v-model="internalForm.work_experiences[0].salary_job_grade" />
+            <Field name="work_experiences[0].salary_job_grade" v-model="internalForm.work_experiences[0].salary_job_grade" v-slot="{ field }">
+                <input type="text" v-bind="field" />
+            </Field>
+            <ErrorMessage name="work_experiences[0].salary_job_grade" class="input-error-msg" />
         </div>
     </div>
 </template>
 
 <script setup>
-defineProps({
-  internalForm: {
-    type: Object,
-    required: true,
-  },
-  errors: {
-    type: Object,
-    required: true,
-  },
-  validateField: {
-    type: Function,
-    required: true,
-  },
-});
+    import { Field, ErrorMessage, configure } from "vee-validate";
+
+    defineProps({
+        internalForm: {
+            type: Object,
+            required: true,
+        },
+    });
+
+    configure({
+        validateOnInput: true,
+    });
 </script>
