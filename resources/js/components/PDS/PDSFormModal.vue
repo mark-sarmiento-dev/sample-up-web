@@ -33,7 +33,7 @@
                 size="md"
                 @click="onNextTab"
             >
-                {{ currentTabIndex === tabs.length - 1 ? "Submit" : "Next" }}
+                {{ allTabsValid ? "Submit" : "Next" }}
             </Button>
         </template>
     </Modal>
@@ -261,38 +261,45 @@ const tabStatus = ref(
     }, {})
 );
 
+const allTabsValid = computed(() => {
+    return Object.values(tabStatus.value).every(status => status === 'valid');
+});
+
 async function onNextTab() {
-    const { valid } = await validate()
+    // Validate current tab first
+    const { valid } = await validate();
 
     if (!valid) {
-        tabStatus.value[activeTab.value] = 'warning'; // mark current tab
-        notify("warning", "Please fill the required fields before proceeding.")
-        return
+        tabStatus.value[activeTab.value] = 'warning';
+        notify("warning", "Please fill the required fields before proceeding.");
+        return;
     }
 
-    tabStatus.value[activeTab.value] = 'valid'; // mark current tab as valid
+    tabStatus.value[activeTab.value] = 'valid';
 
-    const nextIndex = currentTabIndex.value + 1
+    // Validate all tabs
+    const { valid: allValid, invalidTabs } = await validateAllTabs(formData.value);
 
-    if (nextIndex < tabs.length) {
-        activeTab.value = tabs[nextIndex].key
-    } else {
-        // Final check before submission
-        const { valid: allValid, invalidTabs } = await validateAllTabs(formData.value)
+    // Update tabStatus for all tabs
+    tabs.forEach(tab => {
+        tabStatus.value[tab.key] = invalidTabs.includes(tab.key) ? 'warning' : 'valid';
+    });
 
-        tabs.forEach(tab => {
-            tabStatus.value[tab.key] = invalidTabs.includes(tab.key) ? 'warning' : 'valid'
-        });
-
-        if (!allValid) {
-            // notify("warning", `Some information are incomplete: ${invalidTabs.join(", ")}`)
-            notify("warning", `Please complete all the required information before proceeding.`)
-            return;
-        }
-
-        handleSubmit(onSubmit)()
+    if (allValid) {
+        // All tabs valid → submit immediately, regardless of current tab
+        handleSubmit(onSubmit)();
+        return;
     }
-}
+
+    if (invalidTabs.length > 0) {
+        notify("warning", "Please complete all the required information before proceeding.");
+        // Move to the first invalid tab to guide user
+        const nextInvalidTab = tabs.find(tab => invalidTabs.includes(tab.key));
+        if (nextInvalidTab) activeTab.value = nextInvalidTab.key;
+    }
+};
+
+
 
 async function onSubmit(values) {
     const data = values;
