@@ -20,7 +20,6 @@
                 <EmployeeTab />
             </section>
 
-
             <!-- Plantilla Tab -->
             <section v-show="activeTab === 'plantilla'" class="tab-content">
                 <p>Plantilla Management content goes here.</p>
@@ -28,7 +27,7 @@
 
             <!-- Salary Tab -->
             <section v-show="activeTab === 'salary'" class="tab-content">
-                <p>Salary Schedule content goes here.</p>
+                <SalaryScheduleTab />
             </section>
 
             <!-- Attendance Tab -->
@@ -68,6 +67,7 @@
     import DashboardTab from "./Tabs/DashboardTab.vue";
     import AccountTab from "./Tabs/AccountTab.vue";
     import AuditLogTab from "./Tabs/AuditLogTab.vue";
+    import SalaryScheduleTab from "./Tabs/SalaryScheduleTab.vue";
 
 
     // Sidebar tabs

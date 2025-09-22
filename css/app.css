@@ -1,6 +1,4 @@
-@charset "UTF-8";
-.modal {
-  position: fixed;
+/*# sourceMappingURL=app.css.map */on: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -1294,6 +1292,64 @@ main.login-container .toggle-password img {
 .audit-log-table-wrapper table .btn-action {
   margin-right: 4px;
   border-radius: 4px;
+}
+
+.salary-schedule-log-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.salary-schedule-log-header .icon-save,
+.salary-schedule-log-header .icon-upload {
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+  filter: brightness(0) invert(0);
+}
+.salary-schedule-log-header .icon-save {
+  filter: brightness(0) invert(1);
+}
+.salary-schedule-log-header .search-inp {
+  width: 30%;
+}
+.salary-schedule-log-header .button-group {
+  display: flex;
+  gap: 8px;
+}
+.salary-schedule-log-header .button-group button {
+  display: flex;
+}
+
+/* Scroll wrapper */
+.salary-schedule-table-wrapper {
+  overflow-x: auto;
+  max-height: 500px;
+}
+.salary-schedule-table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: center;
+}
+.salary-schedule-table-wrapper th,
+.salary-schedule-table-wrapper td {
+  border: 1px solid #d1d5db;
+  padding: 6px;
+  min-width: 80px;
+}
+.salary-schedule-table-wrapper th {
+  background: #f3f4f6;
+  font-weight: bold;
+}
+.salary-schedule-table-wrapper td input {
+  width: 90%;
+  padding: 4px;
+  border: 1px solid #d1d5db;
+  text-align: right;
+}
+.salary-schedule-table-wrapper .salary-grade {
+  background: #f9fafb;
+  font-weight: bold;
 }
 
 :root {
