@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="forgot-password">
-                    <a href="#">Forgot Password?</a>
+                    <a @click="openForgotPasswordModal" href="#">Forgot Password?</a>
                 </div>
 
                 <!-- Use Button component instead of native button -->
@@ -60,6 +60,7 @@
                     <span v-else>Login</span>
                 </Button>
             </form>
+            <ForgotPasswordModal v-model="showForgotPasswordModal" />
         </section>
     </main>
 </template>
@@ -68,6 +69,7 @@
     import { ref } from "vue";
     import { useForm } from "@inertiajs/vue3";
     import Button from "@/components/Common/Button.vue";
+    import ForgotPasswordModal from "./ForgotPasswordModal.vue";
 
     const form = useForm({
         gsis_id: "",
@@ -75,9 +77,14 @@
     });
 
     const showPassword = ref(false);
+    const showForgotPasswordModal = ref(false);
 
     const togglePassword = () => {
         showPassword.value = !showPassword.value;
+    };
+
+    const openForgotPasswordModal = () => {
+        showForgotPasswordModal.value = true;
     };
 
     const submit = () => {
