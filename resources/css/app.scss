@@ -16,6 +16,7 @@
 @use 'layouts/layoutSidebar';
 @use 'layouts/layoutDashboardTab';
 @use 'layouts/layoutAccountTab';
+@use 'layouts/layoutAuditLogTab';
 
 :root {
     --color-primary: #5b5b5b;

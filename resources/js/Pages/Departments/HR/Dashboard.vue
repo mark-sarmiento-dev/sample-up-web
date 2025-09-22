@@ -48,7 +48,7 @@
 
             <!-- Logs Tab -->
             <section v-show="activeTab === 'logs'" class="tab-content">
-                <p>Audit Logs content goes here.</p>
+                <AuditLogTab />
             </section>
 
             <!-- Account Tab -->
@@ -67,6 +67,7 @@
     import EmployeeTab from './Tabs/EmployeeTab.vue';
     import DashboardTab from "./Tabs/DashboardTab.vue";
     import AccountTab from "./Tabs/AccountTab.vue";
+    import AuditLogTab from "./Tabs/AuditLogTab.vue";
 
 
     // Sidebar tabs

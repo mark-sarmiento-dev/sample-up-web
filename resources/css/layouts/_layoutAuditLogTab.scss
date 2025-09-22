@@ -1,5 +1,5 @@
-/* account tab style */
-.account-header {
+/* audit log style */
+.audit-log-header {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 15px;
@@ -34,7 +34,7 @@
   
   
   // Table styles
-  .account-table-wrapper {
+  .audit-log-table-wrapper {
 	width: 100%;
 	overflow-x: auto; /* Enables horizontal scroll */
   
