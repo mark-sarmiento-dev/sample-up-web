@@ -27,25 +27,25 @@
                     <!-- Example rows -->
                     <tr>
                         <td class="salary-grade">1</td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
                     </tr>
                     <tr>
                         <td class="salary-grade">2</td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
+                        <td><Input  size="sm" type="number" /></td>
                     </tr>
                     <!-- Repeat rows up to 33 -->
                 </tbody>
