@@ -2,7 +2,7 @@
     <Modal v-model="showForgotPasswordModal" title="Forgot Password" size="sm" height="sm">
         <div>
             Enter Your Employee ID
-            <input name="Employee ID" placeholder="Employee ID" size="md" />
+            <Input name="Employee ID" placeholder="Employee ID" size="md" />
         </div>
 
         <template #footer>
