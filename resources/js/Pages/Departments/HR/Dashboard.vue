@@ -22,7 +22,7 @@
 
             <!-- Plantilla Tab -->
             <section v-show="activeTab === 'plantilla'" class="tab-content">
-                <p>Plantilla Management content goes here.</p>
+                <PlantillaTab />
             </section>
 
             <!-- Salary Tab -->
@@ -63,11 +63,19 @@
     import Header from '@/components/Header/Header.vue';
     import Sidebar from '@/components/Sidebar/Sidebar.vue';
     import Button from "@/components/Common/Button.vue";
-    import EmployeeTab from './Tabs/EmployeeTab.vue';
-    import DashboardTab from "./Tabs/DashboardTab.vue";
-    import AccountTab from "./Tabs/AccountTab.vue";
-    import AuditLogTab from "./Tabs/AuditLogTab.vue";
-    import SalaryScheduleTab from "./Tabs/SalaryScheduleTab.vue";
+    // import EmployeeTab from './Tabs/EmployeeTab.vue';
+    // import DashboardTab from "./Tabs/DashboardTab.vue";
+    // import AccountTab from "./Tabs/AccountTab.vue";
+    // import AuditLogTab from "./Tabs/AuditLogTab.vue";
+    // import SalaryScheduleTab from "./Tabs/SalaryScheduleTab.vue";
+    // import PlantillaTab from "./Tabs/PlantillaTab.vue";
+
+    import AccountTab from "./Account/AccountTab.vue";
+    import AuditLogTab from "./AuditLog/AuditLogTab.vue";
+    import EmployeeTab from "./Employee/EmployeeTab.vue";
+    import SalaryScheduleTab from "./Salary/SalaryScheduleTab.vue";
+    import DashboardTab from "./Dashboard/DashboardTab.vue";
+    import PlantillaTab from "./Plantilla/PlantillaTab.vue";
 
 
     // Sidebar tabs
