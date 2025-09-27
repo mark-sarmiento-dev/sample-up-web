@@ -9,7 +9,8 @@
 
 // Layouts
 @use 'layouts/layoutEmployeeTab';
-@use 'layouts/layoutPDSFormModal';
+@use 'layouts/layoutModalPdsForm';
+@use 'layouts/layoutModalAddPosition';
 @use 'layouts/layoutLogin';
 @use 'layouts/layoutDashboard';
 @use 'layouts/layoutHeader';
@@ -19,6 +20,10 @@
 @use 'layouts/layoutAuditLogTab';
 @use 'layouts/layoutSalaryScheduleTab';
 @use 'layouts/layoutPlantillaTab';
+@use 'layouts/layoutPersonelTab';
+@use 'layouts/layoutDeptAndDivTab';
+@use 'layouts/layoutModalDept';
+@use 'layouts/layoutModalDiv';
 
 :root {
     --color-primary: #5b5b5b;
@@ -49,8 +54,4 @@ html, body {
     .modal-open {
         overflow: hidden;
     }
-}
-
-.tab-invalid {
-    color: #d62323;
 }

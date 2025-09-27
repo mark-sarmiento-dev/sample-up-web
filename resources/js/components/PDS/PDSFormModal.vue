@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model="showModal" title="PDS Form" size="lg" height="full">
+    <Modal class="pds-form-modal" v-model="showModal" title="PDS Form" size="lg" height="full">
         <div class="pds-form">
             <!-- Sidebar Navigation -->
             <nav class="pds-nav">

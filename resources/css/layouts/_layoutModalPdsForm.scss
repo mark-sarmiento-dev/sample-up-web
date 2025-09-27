@@ -1,4 +1,4 @@
-.modal-body {
+.pds-form-modal {
     .pds-form {
         display: flex;
         flex-direction: row;
@@ -39,23 +39,14 @@
                 font-weight: bold;
             }
 
+            span {
+                margin-left: 4px;
+            }
+
             img {
                 height: 15px;
                 width: 15px;
             }
-
-            .tabs-status {
-                margin-left: 4px;
-
-                img {
-                    height: 15px;
-                    width: 15px;
-                }
-            }
-        }
-
-        .tab-valid {
-            color: #008000;
         }
     }
 
@@ -142,14 +133,9 @@
         }
     }
 
-    .btn-add-education {
-        margin-top: 15px;
-
-        img {
-            height: 12px;
-            width: 12px;
-        }
-        
+    .btn-add-education img {
+        height: 12px;
+        width: 12px;
     }
 
     /* Other Form Specific */
@@ -235,23 +221,6 @@
         margin-bottom: 4px;
         display: block;
         color: #898989;
-    }
-
-    input,
-    select {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ddd;
-        font-size: 14px;
-        color: #333;
-        background-color: #fff;
-        transition: border-color 0.2s, box-shadow 0.2s;
-
-        &:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 2px rgba(0,0,0,0.2);
-        }
     }
 
     /* ✅ Responsive - Mobile */

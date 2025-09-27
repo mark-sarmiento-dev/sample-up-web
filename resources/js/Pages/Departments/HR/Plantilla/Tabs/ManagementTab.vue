@@ -3,7 +3,7 @@
         <Input class="search-inp" name="search" placeholder="Search..." size="md" />
         <div class="button-group">
             <Button variant="secondary"><img class="icon-print" src="images/icons/printer.png" /> Print Report</Button>
-            <Button variant="primary"><img class="icon-add" src="images/icons/plus.png" /> Add Position</Button>
+            <Button variant="primary" @click="openAddPositionModal"><img class="icon-add" src="images/icons/plus.png" /> Add Position</Button>
         </div>
     </div>
 
@@ -47,10 +47,19 @@
                 </tr>
             </tbody>
         </table>
+        <AddPositionModal v-model="showAddPositionModal" />
     </div>
 </template>
 <script setup>
+    import { ref } from "vue";
     import Button from "@/Components/Common/Button.vue";
     import Input from "@/Components/Common/Input.vue";
     import Tooltip from "@/Components/Common/Tooltip.vue";
+    import AddPositionModal from "../Modals/AddPositionModal.vue";
+
+    const showAddPositionModal = ref(false);
+
+    const openAddPositionModal = () => {
+        showAddPositionModal.value = true;
+    };
 </script>
