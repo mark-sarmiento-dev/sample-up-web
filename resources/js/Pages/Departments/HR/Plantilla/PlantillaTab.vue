@@ -15,11 +15,11 @@
                 </div>
 
                 <div class="content" :class="{ active: activeTab === 'dept_and_div' }">
-                    <p>Here you can manage department and division.</p>
+                    <DeptAndDivisionTab />
                 </div>
 
                 <div class="content" :class="{ active: activeTab === 'plantilla_of_personel' }">
-                    <p>Here you can add plantilla of personel.</p>
+                    <PersonelTab />
                 </div>
             </div>
         </div>
@@ -29,6 +29,8 @@
 <script setup>
     import { ref } from "vue";
     import ManagementTab from "./Tabs/ManagementTab.vue";
+    import PersonelTab from "./Tabs/PersonelTab.vue";
+    import DeptAndDivisionTab from "./Tabs/DeptAndDivisionTab.vue";
     // Default active tab = management
     const activeTab = ref("management");
 

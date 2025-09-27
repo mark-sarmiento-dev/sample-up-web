@@ -1,12 +1,18 @@
-input {
-    padding: 8px 10px;
-    border: 1px solid #d1d5db;
+input,
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
     font-size: 14px;
-    outline: none;
-}
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
 
-input:focus {
-    border-color: #333;
+    &:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    }
 }
 
 .input-sm {
