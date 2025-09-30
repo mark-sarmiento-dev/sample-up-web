@@ -31,8 +31,7 @@ class LoginController extends Controller
 
             $deptCode = $user->employee->department->department_code;
             $route = $this->getDepartmentRoute($deptCode);
-
-            return redirect()->intended($route);
+            return Inertia::location($route);
         }
 
         Log::warning('Login failed', [
@@ -56,12 +55,32 @@ class LoginController extends Controller
     private function getDepartmentRoute($code)
     {
         $mapping = [
-            'LM001' => '/hr-dashboard',
-            'LM005' => '/budget-dashboard',
-            'LM006' => '/accounting-dashboard',
-            'LM007' => '/treasury-dashboard',
+            'LM001' => '/hr-dashboard',       // Inertia HR dashboard
+            'LM005' => '/build/dashboard',    // Sneat Budget
+            'LM006' => '/build/dashboard',    // Sneat Accounting
+            'LM007' => '/build/dashboard',    // Sneat Treasury
         ];
 
         return $mapping[$code] ?? '/';
+    }
+
+    public function createToken(Request $request)
+    {
+        $credentials = $request->validate([
+            'gsis_id' => ['required', 'string'],
+            'password' => ['required', 'string'],
+        ]);
+
+        if (!Auth::attempt($credentials)) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+
+        $user = Auth::user();
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user' => $user,
+        ]);
     }
 }

@@ -1,0 +1,57 @@
+export const routes = [
+  { path: '/', redirect: '/dashboard' },
+  {
+    path: '/',
+    component: () => import('@fms/layouts/default.vue'),
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@fms/pages/dashboard.vue'),
+      },
+      {
+        path: 'departments',
+        component: () => import('@fms/pages/departments.vue'),
+      },
+      {
+        path: 'office-codes',
+        component: () => import('@fms/pages/officecodes.vue'),
+      },
+      {
+        path: 'expenditures',
+        component: () => import('@fms/pages/expenditures.vue'),
+      },
+      {
+        path: 'pao',
+        component: () => import('@fms/pages/pao.vue'),
+      },
+      {
+        path: 'account-settings',
+        component: () => import('@fms/pages/account-settings.vue'),
+      },
+      {
+        path: 'typography',
+        component: () => import('@fms/pages/typography.vue'),
+      },
+      {
+        path: 'icons',
+        component: () => import('@fms/pages/icons.vue'),
+      },
+      {
+        path: 'cards',
+        component: () => import('@fms/pages/cards.vue'),
+      },
+      {
+        path: 'tables',
+        component: () => import('@fms/pages/tables.vue'),
+      },
+      {
+        path: 'form-layouts',
+        component: () => import('@fms/pages/form-layouts.vue'),
+      },
+    ],
+  },
+  {
+    path: '/',
+    component: () => import('@fms/layouts/blank.vue'),
+  },
+]

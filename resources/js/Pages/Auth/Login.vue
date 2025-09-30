@@ -65,31 +65,42 @@
     </main>
 </template>
 
+
 <script setup>
-    import { ref } from "vue";
-    import { useForm } from "@inertiajs/vue3";
-    import Button from "@/components/Common/Button.vue";
-    import ForgotPasswordModal from "./ForgotPasswordModal.vue";
+import { ref } from "vue";
+import { useForm } from "@inertiajs/vue3";
+import axios from "axios";
 
-    const form = useForm({
-        gsis_id: "",
-        password: "",
-    });
+const form = useForm({
+  gsis_id: "",
+  password: "",
+});
 
-    const showPassword = ref(false);
-    const showForgotPasswordModal = ref(false);
+const showPassword = ref(false);
 
-    const togglePassword = () => {
-        showPassword.value = !showPassword.value;
-    };
+const togglePassword = () => {
+  showPassword.value = !showPassword.value;
+};
 
-    const openForgotPasswordModal = () => {
-        showForgotPasswordModal.value = true;
-    };
+const submit = async () => {
+  form.post("/login", {
+    onFinish: async () => {
+      // only try createToken if there are no errors
+      if (Object.keys(form.errors).length === 0) {
+        try {
+          const { data } = await axios.post("/api/createToken", {
+            gsis_id: form.gsis_id,
+            password: form.password,
+          });
 
-    const submit = () => {
-        form.post("/login", {
-            onFinish: () => form.reset("password"),
-        });
-    };
+          if (data.token) {
+            localStorage.setItem("api_token", data.token);
+          }
+        } catch (err) {
+          console.error("Failed to create token:", err.response?.data || err.message);
+        }
+      }
+    },
+  });
+};
 </script>
