@@ -10,7 +10,6 @@
 // Layouts
 @use 'layouts/layoutEmployeeTab';
 @use 'layouts/layoutModalPdsForm';
-@use 'layouts/layoutModalAddPosition';
 @use 'layouts/layoutLogin';
 @use 'layouts/layoutDashboard';
 @use 'layouts/layoutHeader';
@@ -22,8 +21,7 @@
 @use 'layouts/layoutPlantillaTab';
 @use 'layouts/layoutPersonelTab';
 @use 'layouts/layoutDeptAndDivTab';
-@use 'layouts/layoutModalDept';
-@use 'layouts/layoutModalDiv';
+@use 'layouts/layoutFormGrid';
 
 :root {
     --color-primary: #5b5b5b;

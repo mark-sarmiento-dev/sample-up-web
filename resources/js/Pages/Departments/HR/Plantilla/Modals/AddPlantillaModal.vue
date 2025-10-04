@@ -1,7 +1,7 @@
 <template>
-    <Modal class="plantilla-add-div-modal" v-model="showAddPlantillaModal" title="Add Plantilla" size="md" height="md">
+    <Modal class="add-plantilla-modal grid" v-model="showAddPlantillaModal" title="Add Plantilla" size="md" height="md">
         <form class="form-section">
-            <div class="add-div-form-grid">
+            <div class="form-grid">
                 <div class="input-wrapper">
                     <label>Department</label>
                     <Input type="text" />

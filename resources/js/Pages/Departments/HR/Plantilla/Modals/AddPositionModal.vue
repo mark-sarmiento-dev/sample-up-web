@@ -1,7 +1,7 @@
 <template>
-    <Modal class="plantilla-add-position-modal" v-model="showAddPositionModal" title="Add Position" size="md" height="md">
+    <Modal class="plantilla-add-position-modal grid" v-model="showAddPositionModal" title="Add Position" size="md" height="md">
         <form class="form-section">
-            <div class="add-position-form-grid">
+            <div class="form-grid">
                 <div class="input-wrapper">
                     <label>Plantilla Item No.</label>
                     <Input type="text" />
