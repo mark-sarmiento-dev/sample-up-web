@@ -7,6 +7,7 @@
           placeholder="Search..." 
           size="md" 
         />
+        <Button variant="secondary"><img class="icon-print" src="images/icons/printer.png" /> Print Report</Button>
         <!-- <Button variant="primary">
           <img class="icon" src="images/icons/plus.png"/> Add Personel
         </Button> -->
@@ -29,7 +30,13 @@
               <td>Office of the Mayor</td>
               <td>1</td>
               <td>Municipal Mayor</td>
-              <td>Peter Oliver M. Palacio</td>
+              <td>
+                <select>
+                  <option>VACANT</option>
+                  <option>Juan Dela Cruz</option>
+                  <option>Maria Santos</option>
+                </select>
+              </td>
               <td>27/1</td>
               <td>
                 <Tooltip text="View Details" placement="top">

@@ -1,4 +1,6 @@
-/*# sourceMappingURL=app.css.map */on: fixed;
+@charset "UTF-8";
+.modal {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -698,6 +700,7 @@ select:focus {
 }
 .pds-form-modal .education-form-grid {
   position: relative;
+  margin-bottom: 20px;
 }
 .pds-form-modal .education-form-grid img {
   position: absolute;
@@ -1479,11 +1482,11 @@ main.login-container .toggle-password img {
   justify-content: space-between;
   margin-bottom: 15px;
 }
-.personel-header .icon {
+.personel-header .icon-print {
   width: 11px;
   height: 11px;
   margin-right: 2px;
-  filter: brightness(0) invert(1);
+  filter: brightness(0) invert(0);
 }
 .personel-header .search-inp {
   width: 30%;
