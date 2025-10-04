@@ -71,6 +71,7 @@ export default defineConfig({
   define: { 'process.env': {} },
   resolve: {
     alias: {
+      '@': fileURLToPath(new URL('./resources/js', import.meta.url)),
       '@core-scss': fileURLToPath(new URL('./resources/styles/@core', import.meta.url)),
       '@fms': fileURLToPath(new URL('./resources/js/FMS', import.meta.url)),
       '@core': fileURLToPath(new URL('./resources/js/FMS/@core', import.meta.url)),
