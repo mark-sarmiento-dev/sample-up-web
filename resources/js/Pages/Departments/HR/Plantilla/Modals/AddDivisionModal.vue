@@ -1,7 +1,7 @@
 <template>
-    <Modal class="plantilla-add-div-modal" v-model="showAddDivModal" title="Add Division" size="md" height="md">
+    <Modal class="plantilla-add-div-modal grid" v-model="showAddDivModal" title="Add Division" size="md" height="md">
         <form class="form-section">
-            <div class="add-div-form-grid">
+            <div class="form-grid">
                 <div class="input-wrapper span-2">
                     <label>Division Name</label>
                     <Input type="text" />
