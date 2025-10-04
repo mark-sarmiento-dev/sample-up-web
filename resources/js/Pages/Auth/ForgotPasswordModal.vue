@@ -15,7 +15,8 @@
     import { ref } from "vue";
     import Modal from "@/components/Common/Modal.vue";
     import Button from "@/components/Common/Button.vue";
-    import Input from "@/Components/Common/Input.vue";
+    import Input from "@/components/Common/Input.vue";
+
 
     const showForgotPasswordModal = ref(false);
 
