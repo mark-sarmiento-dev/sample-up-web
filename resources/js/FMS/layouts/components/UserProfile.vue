@@ -10,6 +10,7 @@ onMounted(async () => {
   try {
     const { data } = await api.get("/user"); 
     user.value = data;
+    localStorage.setItem("user_info", JSON.stringify(data));
   } catch (err) {
     console.error("Failed to fetch user:", err.response?.data || err.message);
   }
@@ -23,6 +24,7 @@ async function logout() {
   } finally {
     // always clear token & redirect
     localStorage.removeItem("api_token");
+    localStorage.removeItem("user_info");
     window.location.href = "/login";
   }
 }

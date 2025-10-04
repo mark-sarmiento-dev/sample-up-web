@@ -16,7 +16,8 @@ class UpdatePaoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'office_code_id' => 'sometimes|exists:office_codes,id',  // updated
+            'office_code_id' => 'sometimes|exists:office_codes,id',
+            'office_code_budget_id' => 'sometimes|nullable|exists:office_code_budgets,id', // ✅ Added
             'groups' => 'sometimes|array',
             'groups.*.group_id' => 'required_with:groups|exists:group_object_expenditures,id',
             'groups.*.objects' => 'required_with:groups|array',

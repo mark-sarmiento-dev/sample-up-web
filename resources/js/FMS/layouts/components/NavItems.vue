@@ -6,6 +6,7 @@ import puzzlePiece from '@/../icons/puzzle_piece_3d.png';
 import bookmarkTabs from '@/../icons/bookmark_tabs_3d.png';
 import okHand from '@/../icons/ok_hand_3d_default.png';
 import greenBook from '@/../icons/green_book_3d.png';
+import moneyBag from '@/../icons/money_bag_3d.png';
 
 import VerticalNavSectionTitle from '@fms/@layouts/components/VerticalNavSectionTitle.vue';
 import VerticalNavGroup from '@layouts/components/VerticalNavGroup.vue';
@@ -73,6 +74,13 @@ onMounted(async () => {
 
     <VerticalNavSectionTitle
       :item="{ heading: 'Management' }"
+    />
+    <VerticalNavLink
+      :item="{
+        title: 'Budget Allotment',
+        icon: moneyBag,
+        href: '/annual-budget',
+      }"
     />
     <VerticalNavLink
       :item="{

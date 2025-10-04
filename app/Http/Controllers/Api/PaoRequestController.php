@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 class PaoRequestController extends Controller
 {
     /** ---------------------------
-     *  Helper: Load request details
-     *  ---------------------------
+     * Helper: Load request details
+     * ---------------------------
      */
-   private function loadRequestWithRelations($id)
+    private function loadRequestWithRelations($id)
     {
         $request = DB::table('pao_requests')->where('id', $id)->first();
         if (!$request) {
@@ -22,6 +22,11 @@ class PaoRequestController extends Controller
 
         // Get office code name
         $officeCode = DB::table('office_codes')->where('id', $request->office_code_id)->first();
+        
+        // Get office code budget (if it exists)
+        $officeCodeBudget = $request->office_code_budget_id
+            ? DB::table('office_code_budgets')->find($request->office_code_budget_id)
+            : null;
 
         $groups = DB::table('pao_groups')
             ->where('request_id', $request->id)
@@ -42,93 +47,111 @@ class PaoRequestController extends Controller
             });
 
         return [
-            'id'               => $request->id,
-            'office_code_id'   => $request->office_code_id,
-            'office_code_name' => $officeCode->office_code ?? null, // Use actual column
-            'created_by'       => $request->created_by,
-            'updated_by'       => $request->updated_by,
-            'deleted_by'       => $request->deleted_by,
-            'created_at'       => $request->created_at,
-            'updated_at'       => $request->updated_at,
-            'groups'           => $groups,
-            'objects'          => $objects,
-            'total_amount'     => $objects->sum('amount'),
+            'id'                    => $request->id,
+            'office_code_id'        => $request->office_code_id,
+            'office_code_budget_id' => $request->office_code_budget_id,
+            'office_code_name'      => $officeCode->office_code ?? null,
+            'office_code_budget'    => $officeCodeBudget,
+            'created_by'            => $request->created_by,
+            'updated_by'            => $request->updated_by,
+            'deleted_by'            => $request->deleted_by,
+            'created_at'            => $request->created_at,
+            'updated_at'            => $request->updated_at,
+            'groups'                => $groups,
+            'objects'               => $objects,
+            'total_amount'          => $objects->sum('amount'),
         ];
     }
 
-/** ---------------------------
- *  GET /api/pao-requests
- *  ---------------------------
- */
-public function index()
-{
-    $requests = DB::table('pao_requests')
-        ->join('office_codes', 'pao_requests.office_code_id', '=', 'office_codes.id')
-        ->leftJoin('users', 'pao_requests.created_by', '=', 'users.id')
-        ->select(
-            'pao_requests.id as request_id',
-            'pao_requests.created_by',
-            'users.name as name',
-            'pao_requests.created_at',
-            'pao_requests.office_code_id',
-            'office_codes.description as office_code_description'
-        )
-        ->orderBy('pao_requests.id', 'asc')
-        ->get();
-
-    $data = $requests->map(function ($request) {
-        // Fetch groups for each request
-        $groups = DB::table('pao_groups')
-            ->join('group_object_expenditures', 'pao_groups.group_id', '=', 'group_object_expenditures.id')
-            ->where('pao_groups.request_id', $request->request_id)
+    /** ---------------------------
+     * GET /api/pao-requests
+     * ---------------------------
+     */
+    public function index()
+    {
+        $requests = DB::table('pao_requests')
+            ->join('office_codes', 'pao_requests.office_code_id', '=', 'office_codes.id')
+            ->leftJoin('users', 'pao_requests.created_by', '=', 'users.id')
+            ->leftJoin('office_code_budgets', 'pao_requests.office_code_budget_id', '=', 'office_code_budgets.id')
+            ->leftJoin('annual_budgets', 'office_code_budgets.annual_budget_id', '=', 'annual_budgets.id') // Correct join for year
             ->select(
+                'pao_requests.id as request_id',
+                'pao_requests.created_by',
+                'users.name as name',
+                'pao_requests.created_at',
+                'pao_requests.office_code_id',
+                'office_codes.description as office_code_description',
+                'pao_requests.office_code_budget_id',
+                'annual_budgets.year as budget_year',
+                'office_code_budgets.budget as budget' // ✅ Added budget field
+            )
+            ->orderBy('pao_requests.id', 'asc')
+            ->get();
+
+        if ($requests->isEmpty()) {
+            return response()->json([]);
+        }
+
+        $requestIds = $requests->pluck('request_id');
+
+        $allGroups = DB::table('pao_groups')
+            ->join('group_object_expenditures', 'pao_groups.group_id', '=', 'group_object_expenditures.id')
+            ->whereIn('pao_groups.request_id', $requestIds)
+            ->select(
+                'pao_groups.request_id',
                 'pao_groups.id as pao_group_id',
                 'group_object_expenditures.id as group_id',
                 'group_object_expenditures.group_name'
             )
-            ->orderBy('group_object_expenditures.id', 'asc')
             ->get()
-            ->map(function ($group) use ($request) {
-                // Fetch objects for each group
-                $objects = DB::table('pao_objects')
-                    ->join('object_expenditures', 'pao_objects.object_expenditure_id', '=', 'object_expenditures.id')
-                    ->where('pao_objects.request_id', $request->request_id)
-                    ->where('pao_objects.group_id', $group->pao_group_id)
-                    ->select(
-                        'object_expenditures.id as object_expenditure_id',
-                        'object_expenditures.object_expenditure as object_expenditure_name',
-                        'object_expenditures.account_code',
-                        'pao_objects.amount' // ✅ Added amount
-                    )
-                    ->orderBy('object_expenditures.id', 'asc')
-                    ->get();
+            ->groupBy('request_id');
 
+        $allPaoGroupIds = $allGroups->flatten()->pluck('pao_group_id');
+
+        $allObjects = DB::table('pao_objects')
+            ->join('object_expenditures', 'pao_objects.object_expenditure_id', '=', 'object_expenditures.id')
+            ->whereIn('pao_objects.group_id', $allPaoGroupIds)
+            ->select(
+                'pao_objects.group_id as pao_group_id',
+                'object_expenditures.id as object_expenditure_id',
+                'object_expenditures.object_expenditure as object_expenditure_name',
+                'object_expenditures.account_code',
+                'pao_objects.amount'
+            )
+            ->get()
+            ->groupBy('pao_group_id');
+
+        $data = $requests->map(function ($request) use ($allGroups, $allObjects) {
+            $requestGroups = $allGroups->get($request->request_id, collect());
+            
+            $groupsWithObjects = $requestGroups->map(function ($group) use ($allObjects) {
                 return [
                     'group_id'   => $group->group_id,
                     'group_name' => $group->group_name,
-                    'objects'    => $objects,
+                    'objects'    => $allObjects->get($group->pao_group_id, collect()),
                 ];
             });
 
-        return [
-            'request_id'       => $request->request_id,
-            'created_by'       => $request->created_by,
-            'name'             => $request->name,
-            'created_at'       => $request->created_at,
-            'office_code_id'   => $request->office_code_id,
-            'office_code_description' => $request->office_code_description,
-            'groups'           => $groups,
-        ];
-    });
+            return [
+                'request_id'              => $request->request_id,
+                'created_by'              => $request->created_by,
+                'name'                    => $request->name,
+                'created_at'              => $request->created_at,
+                'office_code_id'          => $request->office_code_id,
+                'office_code_budget_id'   => $request->office_code_budget_id,
+                'budget_year'             => $request->budget_year,
+                'budget'                  => $request->budget, // ✅ Added budget field to response
+                'office_code_description' => $request->office_code_description,
+                'groups'                  => $groupsWithObjects,
+            ];
+        });
 
-    return response()->json($data);
-}
-
-
+        return response()->json($data);
+    }
 
     /** ---------------------------
-     *  GET /api/pao-requests/{id}
-     *  ---------------------------
+     * GET /api/pao-requests/{id}
+     * ---------------------------
      */
     public function show($id)
     {
@@ -139,8 +162,8 @@ public function index()
     }
 
     /** ---------------------------
-     *  POST /api/pao-requests
-     *  ---------------------------
+     * POST /api/pao-requests
+     * ---------------------------
      */
     public function store(StorePaoRequest $request)
     {
@@ -153,6 +176,7 @@ public function index()
             // Insert PAO request
             $requestId = DB::table('pao_requests')->insertGetId([
                 'office_code_id' => $validated['office_code_id'],
+                'office_code_budget_id' => $validated['office_code_budget_id'] ?? null,
                 'created_by'     => $validated['created_by'],
                 'updated_by'     => $validated['created_by'],
                 'created_at'     => now(),
@@ -210,9 +234,9 @@ public function index()
             DB::commit();
 
             return response()->json([
-                'message'           => 'Request saved successfully',
-                'request_id'        => $requestId,
-                'office_code_name'  => $officeCode->office_code ?? null, // include office code name
+                'message'          => 'Request saved successfully',
+                'request_id'       => $requestId,
+                'office_code_name' => $officeCode->office_code ?? null,
             ], 201);
 
         } catch (\Throwable $e) {
@@ -223,41 +247,45 @@ public function index()
     }
 
     /** ---------------------------
-     *  PUT/PATCH /api/pao-requests/{id}
-     *  ---------------------------
+     * PUT/PATCH /api/pao-requests/{id}
+     * ---------------------------
      */
-   public function update(UpdatePaoRequest $request, $id)
+    public function update(UpdatePaoRequest $request, $id)
     {
-    $validated = $request->validated();
-    $userId = $validated['updated_by'] ?? auth()->id();
+        $validated = $request->validated();
+        // Use created_by from the payload for the user ID to maintain consistency with your store method
+        $userId = $validated['created_by'] ?? auth()->id();
 
-    DB::beginTransaction();
+        DB::beginTransaction();
 
-    try {
-        $paoRequest = DB::table('pao_requests')->where('id', $id)->first();
-        if (!$paoRequest) {
-            return response()->json(['error' => "PAO Request {$id} not found"], 404);
-        }
+        try {
+            $paoRequest = DB::table('pao_requests')->where('id', $id)->first();
+            if (!$paoRequest) {
+                return response()->json(['error' => "PAO Request {$id} not found"], 404);
+            }
 
-        // Update main request
-        DB::table('pao_requests')->where('id', $id)->update([
-            'office_code_id' => $validated['office_code_id'] ?? $paoRequest->office_code_id,
-            'updated_by'     => $userId,
-            'updated_at'     => now(),
-        ]);
+            // 1. Update the main PAO Request record
+            $updateData = [
+                'office_code_id'        => $validated['office_code_id'],
+                'office_code_budget_id' => $validated['office_code_budget_id'] ?? null,
+                'updated_by'            => $userId,
+                'updated_at'            => now(),
+            ];
+            DB::table('pao_requests')->where('id', $id)->update($updateData);
 
-        // Handle groups and objects
-        if (!empty($validated['groups'])) {
-            foreach ($validated['groups'] as $group) {
-                $paoGroup = DB::table('pao_groups')
-                    ->where('request_id', $id)
-                    ->where('group_id', $group['group_id'])
-                    ->first();
+            // --- Synchronization Logic ---
 
-                $paoGroupId = $paoGroup
-                    ? tap($paoGroup->id, fn() => DB::table('pao_groups')->where('id', $paoGroup->id)->update(['updated_by' => $userId, 'updated_at' => now()]))
-                    : DB::table('pao_groups')->insertGetId([
-                        'request_id' => $id,
+            // 2. First, delete all existing objects and groups for this request.
+            // This ensures that any items removed on the frontend are also removed from the database.
+            DB::table('pao_objects')->where('request_id', $id)->delete();
+            DB::table('pao_groups')->where('request_id', $id)->delete();
+
+            // 3. Now, re-insert the groups and objects from the validated payload.
+            // This logic is similar to your 'store' method.
+            if (!empty($validated['groups'])) {
+                foreach ($validated['groups'] as $group) {
+                    $paoGroupId = DB::table('pao_groups')->insertGetId([
+                        'request_id' => $id, // Use the existing request ID
                         'group_id'   => $group['group_id'],
                         'created_by' => $userId,
                         'updated_by' => $userId,
@@ -265,66 +293,52 @@ public function index()
                         'updated_at' => now(),
                     ]);
 
-                foreach ($group['objects'] as $object) {
-                    $paoObject = DB::table('pao_objects')
-                        ->where('request_id', $id)
-                        ->where('group_id', $paoGroupId)
-                        ->where('object_expenditure_id', $object['object_expenditure_id'])
-                        ->first();
-
-                    if ($paoObject) {
-                        DB::table('pao_objects')->where('id', $paoObject->id)->update([
-                            'amount'     => $object['amount'],
-                            'updated_by' => $userId,
-                            'updated_at' => now(),
-                        ]);
-                    } else {
-                        DB::table('pao_objects')->insert([
-                            'request_id'            => $id,
-                            'group_id'              => $paoGroupId,
-                            'object_expenditure_id' => $object['object_expenditure_id'],
-                            'amount'                => $object['amount'],
-                            'created_by'            => $userId,
-                            'updated_by'            => $userId,
-                            'created_at'            => now(),
-                            'updated_at'            => now(),
-                        ]);
+                    if (!empty($group['objects'])) {
+                        foreach ($group['objects'] as $object) {
+                            DB::table('pao_objects')->insert([
+                                'request_id'            => $id,
+                                'group_id'              => $paoGroupId,
+                                'object_expenditure_id' => $object['object_expenditure_id'],
+                                'amount'                => $object['amount'],
+                                'created_by'            => $userId,
+                                'updated_by'            => $userId,
+                                'created_at'            => now(),
+                                'updated_at'            => now(),
+                            ]);
+                        }
                     }
                 }
             }
+            
+            // --- End of Synchronization Logic ---
+
+            // Save to audit_logs
+            DB::table('audit_logs')->insert([
+                'auditable_id'   => $id,
+                'auditable_type' => 'App\Models\PaoRequest',
+                'changes'        => json_encode(['to' => $validated]),
+                'remarks'        => 'Updated PAO request',
+                'updated_by'     => $userId,
+                'updated_at'     => now(),
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'message'    => 'Request updated successfully',
+                'request_id' => $id,
+            ], 200);
+
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            \Log::error('PAO Request update failed', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            return response()->json(['error' => 'An internal server error occurred during the update.'], 500);
         }
-
-        // Fetch office code name for response
-        $officeCode = DB::table('office_codes')->where('id', $validated['office_code_id'] ?? $paoRequest->office_code_id)->first();
-
-        // Save to audit_logs
-        DB::table('audit_logs')->insert([
-            'auditable_id'   => $id,
-            'auditable_type' => 'App\Models\PaoRequest',
-            'changes'        => json_encode(['to' => $validated]),
-            'remarks'        => 'Updated PAO request',
-            'updated_by'     => $userId,
-            'updated_at'     => now(),
-        ]);
-
-        DB::commit();
-
-        return response()->json([
-            'message'           => 'Request updated successfully',
-            'request_id'        => $id,
-            'office_code_name'  => $officeCode->office_code ?? null,
-        ], 200);
-
-    } catch (\Throwable $e) {
-        DB::rollBack();
-        return response()->json(['error' => $e->getMessage()], 500);
     }
-}
-
 
     /** ---------------------------
-     *  DELETE /api/pao-requests/{id}
-     *  ---------------------------
+     * DELETE /api/pao-requests/{id}
+     * ---------------------------
      */
     public function destroy($id)
     {
@@ -336,7 +350,7 @@ public function index()
 
             DB::table('pao_requests')->where('id', $id)->delete();
 
-            // ✅ Audit log
+            // Audit log
             DB::table('audit_logs')->insert([
                 'auditable_id'   => $id,
                 'auditable_type' => 'App\Models\PaoRequest',
@@ -355,8 +369,8 @@ public function index()
     }
 
     /** ---------------------------
-     *  DELETE /api/pao-requests/{requestId}/objects/{objectId}
-     *  ---------------------------
+     * DELETE /api/pao-requests/{requestId}/objects/{objectId}
+     * ---------------------------
      */
     public function destroyObject($requestId, $objectExpenditureId)
     {
@@ -376,7 +390,7 @@ public function index()
 
             DB::table('pao_objects')->where('id', $paoObject->id)->delete();
 
-            // ✅ Audit log
+            // Audit log
             DB::table('audit_logs')->insert([
                 'auditable_id'   => $paoObject->id,
                 'auditable_type' => 'App\Models\PaoRequest',
@@ -398,8 +412,8 @@ public function index()
     }
 
     /** ---------------------------
-     *  DELETE /api/pao-requests/{requestId}/groups/{groupId}
-     *  ---------------------------
+     * DELETE /api/pao-requests/{requestId}/groups/{groupId}
+     * ---------------------------
      */
     public function destroyGroup($requestId, $groupId)
     {
@@ -426,7 +440,7 @@ public function index()
                 ->whereIn('id', $paoGroupIds)
                 ->delete();
 
-            // ✅ Audit log
+            // Audit log
             DB::table('audit_logs')->insert([
                 'auditable_id'   => $requestId,
                 'auditable_type' => 'App\Models\PaoRequest',

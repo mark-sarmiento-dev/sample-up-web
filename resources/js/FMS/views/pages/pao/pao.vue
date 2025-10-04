@@ -1,6 +1,9 @@
 <script setup>
 import api from "@fms/utils/api";
 import { computed, onMounted, ref } from 'vue'
+import PaoModal from "./PaoModal.vue"
+import DeletePaoModal from './DeletePaoModal.vue'
+
 const requests = ref([])
 const loading = ref(true)
 const activeRequestIds = ref([])
@@ -8,6 +11,57 @@ const activeGroupIds = ref([])
 
 const searchQuery = ref('')
 const sortOrder = ref('desc') // default newest first
+const isTableView = ref(true) // false for Accordion, true for Table
+const sortItems = ref([
+  { title: 'Newest First', value: 'desc' },
+  { title: 'Oldest First', value: 'asc' },
+])
+
+// --- Edit/Add Modal state ---
+const isModalOpen = ref(false)
+const modalData = ref({})
+
+// --- Delete Modal State ---
+const isDeleteModalOpen = ref(false)
+const isDeleting = ref(false)
+const requestToDelete = ref(null)
+
+
+function openAddModal() {
+  modalData.value = {}
+  isModalOpen.value = true
+}
+
+function openEditModal(request) {
+  modalData.value = request
+  isModalOpen.value = true
+}
+
+function handleSaved() {
+  fetchRequests()
+}
+
+// --- Delete Functions ---
+function openDeleteModal(request) {
+  requestToDelete.value = request // Store the whole request object
+  isDeleteModalOpen.value = true
+}
+
+async function deleteRequest() {
+  if (!requestToDelete.value) return
+
+  isDeleting.value = true
+  try {
+    await api.delete(`/pao-requests/${requestToDelete.value.request_id}`)
+    fetchRequests()
+    isDeleteModalOpen.value = false // Close modal on success
+  } catch (error) {
+    console.error('Failed to delete request:', error)
+  } finally {
+    isDeleting.value = false
+    requestToDelete.value = null // Clean up after
+  }
+}
 
 async function fetchRequests() {
   loading.value = true
@@ -31,13 +85,56 @@ function formatDate(dateStr) {
   })
 }
 
+function calculateGrandTotal(request) {
+  if (!request || !request.groups) return 0;
+  return request.groups.reduce((total, group) => {
+    const groupTotal = group.objects.reduce((groupSum, obj) => {
+      return groupSum + (Number(obj.amount) || 0);
+    }, 0);
+    return total + groupTotal;
+  }, 0);
+}
+
+function formatCurrency(value) {
+  if (value === null || value === undefined) return '-';
+  return new Intl.NumberFormat('en-PH', {
+    style: 'currency',
+    currency: 'PHP'
+  }).format(value);
+}
+
 function togglePanel(list, id) {
   const idx = list.indexOf(id)
   if (idx === -1) list.push(id)
   else list.splice(idx, 1)
 }
+
 function isActive(list, id) {
   return list.includes(id)
+}
+
+function getStatusClass(req) {
+  const budget = parseFloat(req.budget);
+  const grandTotal = calculateGrandTotal(req);
+
+  if (isNaN(budget) || budget <= 0) {
+    return 'blue';
+  }
+
+  const remaining = budget - grandTotal;
+  const percentageRemaining = remaining / budget;
+
+  if (percentageRemaining <= 0) {
+    return 'blue';
+  }
+  if (percentageRemaining < 0.1) {
+    return 'yellow';
+  }
+  if (percentageRemaining >= 0.5) {
+    return 'green';
+  }
+  
+  return '';
 }
 
 /* --- smooth expand/collapse --- */
@@ -92,8 +189,7 @@ const filteredRequests = computed(() => {
     const q = searchQuery.value.toLowerCase()
     result = result.filter((req) =>
       req.name?.toLowerCase().includes(q) ||
-      req.office_code_description?.toLowerCase().includes(q) ||
-      req.tracking?.toLowerCase().includes(q)
+      req.office_code_description?.toLowerCase().includes(q)
     )
   }
 
@@ -108,27 +204,61 @@ const filteredRequests = computed(() => {
 </script>
 
 <template>
-    <!-- Add button row -->
   <div class="d-flex justify-end mb-4 responsive-add">
-    <VBtn variant="outlined" color="primary" @click="Alert('asd')">+ Add PAO Request</VBtn>
+    <VBtn variant="outlined" color="primary" @click="openAddModal">
+      + Add PAO Request
+    </VBtn>
   </div>
 
   <div class="accordion-card">
-    <!-- Search + Sort Controls -->
     <div class="controls">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search by requester, office, or tracking..."
-        class="search-input"
-      />
-      <select v-model="sortOrder" class="sort-select">
-        <option value="desc">Newest First</option>
-        <option value="asc">Oldest First</option>
-      </select>
+      <div class="controls-top-row">
+        <VTextField
+          v-model="searchQuery"
+          placeholder="Search by requester or office..."
+          prepend-inner-icon="bx-search"
+          density="compact"
+          variant="outlined"
+          hide-details
+          class="search-field"
+        />
+        <VSelect
+          v-model="sortOrder"
+          :items="sortItems"
+          prepend-inner-icon="bx-sort-alt-2"
+          density="compact"
+          variant="outlined"
+          hide-details
+          class="sort-dropdown"
+        />
+      </div>
+
+      <div class="controls-bottom-row">
+        <VSwitch
+          v-model="isTableView"
+          :label="isTableView ? 'Switch to Accordion View' : 'Switch to Table View'"
+          color="primary"
+          density="compact"
+          hide-details
+          class="view-switch"
+        />
+      </div>
     </div>
 
-    <!-- Loader -->
+    <div class="legend-container">
+      <div class="legend-item">
+        <span class="legend-dot green"></span>
+        <span class="legend-text">50% or more budget</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot yellow"></span>
+        <span class="legend-text">Less than 10% budget</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot blue"></span>
+        <span class="legend-text">No budget remaining</span>
+      </div>
+    </div>
     <div v-if="loading" class="py-10 text-center">
       <VProgressCircular indeterminate color="primary" size="32" width="4" />
       <div class="mt-2 text-grey-darken-2 loader-text">
@@ -136,95 +266,160 @@ const filteredRequests = computed(() => {
       </div>
     </div>
 
-    <!-- Accordion -->
     <div v-else>
-      <div
-        v-for="req in filteredRequests"
-        :key="req.request_id"
-        class="accordion-item"
-      >
-        <!-- Request Header -->
-        <button
-          class="accordion-header"
-          type="button"
-          :aria-expanded="isActive(activeRequestIds, req.request_id)"
-          @click="togglePanel(activeRequestIds, req.request_id)"
+      <div v-if="!isTableView">
+        <div
+          v-for="req in filteredRequests"
+          :key="req.request_id"
+          class="accordion-item"
         >
-          <div class="header-left">
-            <div class="group-title">{{ req.office_code_description }}</div>
-            <div class="subheader">{{ formatDate(req.created_at) }}</div>
-            <div class="subheader">Requested By: {{ req.name }}</div>
-          </div>
-          <div class="header-right">
-            <span v-if="req.tracking" class="tracking">{{ req.tracking }}</span>
-            <span v-else class="tracking text-grey-darken-1">No tracking</span>
-            <VIcon
-              :class="['caret', { rotated: isActive(activeRequestIds, req.request_id) }]"
-              icon="bx-chevron-down"
-            />
-          </div>
-        </button>
-
-        <!-- Request Body (Groups Accordion) -->
-        <transition @before-enter="beforeEnter" @enter="enter" @leave="leave">
-          <div
-            v-if="isActive(activeRequestIds, req.request_id)"
-            class="accordion-body"
+          <button
+            class="accordion-header"
+            type="button"
+            :aria-expanded="isActive(activeRequestIds, req.request_id)"
+            @click="togglePanel(activeRequestIds, req.request_id)"
           >
-            <div
-              v-for="grp in req.groups"
-              :key="`${req.request_id}-${grp.group_id}`"
-              class="accordion-item group-accordion"
-            >
-              <!-- Group Header -->
-              <button
-                class="accordion-header group-header"
-                type="button"
-                :aria-expanded="isActive(activeGroupIds, `${req.request_id}-${grp.group_id}`)"
-                @click="togglePanel(activeGroupIds, `${req.request_id}-${grp.group_id}`)"
-              >
-                <div class="group-title">{{ grp.group_name }}</div>
-                <VIcon
-                  :class="['caret', { rotated: isActive(activeGroupIds, `${req.request_id}-${grp.group_id}`) }]"
-                  icon="bx-chevron-down"
-                />
-              </button>
-
-              <!-- Group Body (Objects Table) -->
-              <transition @before-enter="beforeEnter" @enter="enter" @leave="leave">
-                <div
-                  v-if="isActive(activeGroupIds, `${req.request_id}-${grp.group_id}`)"
-                  class="accordion-body"
-                >
-                  <VTable class="accordion-table">
-                    <thead>
-                      <tr class="bg-grey-lighten-4 text-grey-darken-3 text-sm">
-                        <th>Account Code</th>
-                        <th>Object Expenditure</th>
-                        <th class="text-right">Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="obj in grp.objects" :key="obj.object_expenditure_id">
-                        <td>{{ obj.account_code }}</td>
-                        <td>{{ obj.object_expenditure_name }}</td>
-                        <td class="text-right">{{ obj.amount }}</td>
-                      </tr>
-                    </tbody>
-                  </VTable>
-                </div>
-              </transition>
+            <div class="d-flex align-center gap-3">
+              <span :class="['status-pill', getStatusClass(req)]"></span>
+              <div class="header-left">
+                <div class="group-title">{{ req.office_code_description }}</div>
+                <div class="subheader">{{ formatDate(req.created_at) }}</div>
+                <div class="subheader">Requested By: {{ req.name }}</div>
+              </div>
             </div>
-          </div>
-        </transition>
+
+            <div class="header-right">
+              <div class="action-buttons">
+                <VBtn variant="text" size="small" color="primary" @click.stop="openEditModal(req)">
+                  Edit
+                </VBtn>
+                <VBtn
+                  icon="bx-trash"
+                  variant="text"
+                  size="small"
+                  color="error"
+                  @click.stop="openDeleteModal(req)"
+                />
+              </div>
+              <VIcon
+                :class="['caret', { rotated: isActive(activeRequestIds, req.request_id) }]"
+                icon="bx-chevron-down"
+              />
+            </div>
+          </button>
+
+          <transition @before-enter="beforeEnter" @enter="enter" @leave="leave">
+            <div
+              v-if="isActive(activeRequestIds, req.request_id)"
+              class="accordion-body"
+            >
+              <div
+                v-for="grp in req.groups"
+                :key="`${req.request_id}-${grp.group_id}`"
+                class="accordion-item group-accordion"
+              >
+                <button
+                  class="accordion-header group-header"
+                  type="button"
+                  :aria-expanded="isActive(activeGroupIds, `${req.request_id}-${grp.group_id}`)"
+                  @click="togglePanel(activeGroupIds, `${req.request_id}-${grp.group_id}`)"
+                >
+                  <div class="group-title">{{ grp.group_name }}</div>
+                  <VIcon
+                    :class="['caret', { rotated: isActive(activeGroupIds, `${req.request_id}-${grp.group_id}`) }]"
+                    icon="bx-chevron-down"
+                  />
+                </button>
+
+                <transition @before-enter="beforeEnter" @enter="enter" @leave="leave">
+                  <div
+                    v-if="isActive(activeGroupIds, `${req.request_id}-${grp.group_id}`)"
+                    class="accordion-body"
+                  >
+                    <VTable class="accordion-table">
+                      <thead>
+                        <tr class="bg-grey-lighten-4 text-grey-darken-3 text-sm">
+                          <th>Account Code</th>
+                          <th>Object Expenditure</th>
+                          <th class="text-right">Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="obj in grp.objects" :key="obj.object_expenditure_id">
+                          <td>{{ obj.account_code }}</td>
+                          <td>{{ obj.object_expenditure_name }}</td>
+                          <td class="text-right">{{ formatCurrency(obj.amount) }}</td>
+                        </tr>
+                      </tbody>
+                    </VTable>
+                  </div>
+                </transition>
+              </div>
+            </div>
+          </transition>
+        </div>
       </div>
 
-      <!-- Empty state -->
+      <div v-else>
+        <VTable class="main-table">
+          <thead>
+            <tr>
+              <th class="status-column-header text-center">Status</th>
+              <th>Year</th>
+              <th>Office Code</th>
+              <th>Requested By</th>
+              <th class="text-right">Grand Total</th>
+              <th>Budget</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="req in filteredRequests"
+              :key="req.request_id"
+              class="clickable-row"
+              @click="openEditModal(req)"
+            >
+              <td class="text-center">
+                <span :class="['status-pill', getStatusClass(req)]"></span>
+              </td>
+              <td>{{ req.budget_year }}</td>
+              <td>{{ req.office_code_description }}</td>
+              <td>{{ req.name }}</td>
+              <td class="text-right">{{ formatCurrency(calculateGrandTotal(req)) }}</td>
+              <td>{{ formatCurrency(req.budget) }}</td>
+              <td class="text-center">
+                <VBtn
+                  icon="bx-trash"
+                  variant="text"
+                  size="small"
+                  color="error"
+                  @click.stop="openDeleteModal(req)"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </VTable>
+      </div>
+
       <div v-if="!loading && filteredRequests.length === 0" class="text-center py-6 text-grey-darken-2">
         No requests found.
       </div>
     </div>
   </div>
+
+  <PaoModal
+    v-model="isModalOpen"
+    :data="modalData"
+    @saved="handleSaved"
+  />
+
+  <DeletePaoModal
+    v-model="isDeleteModalOpen"
+    :item-name="requestToDelete?.office_code_description"
+    :loading="isDeleting"
+    @confirm="deleteRequest"
+  />
 </template>
 
 <style scoped>
@@ -239,33 +434,82 @@ const filteredRequests = computed(() => {
   overflow: hidden;
   padding: 16px;
 }
+
 .controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.controls-top-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
-  gap: 10px;
+  gap: 16px;
 }
-.search-input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 0.875rem;
+
+.controls-bottom-row {
+  display: flex;
+  justify-content: flex-end;
 }
-.search-input:focus {
-  outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+
+.search-field {
+  max-width: 600px !important;
+  width: 100%;
 }
-.sort-select {
-  padding: 8px 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  background: #fff;
-  color: #334155;
+.sort-dropdown {
+  max-width: 250px !important;
 }
+
+.view-switch {
+  align-self: center;
+}
+.view-switch :deep(.v-selection-control) {
+  flex-direction: row-reverse;
+  padding-inline-start: 0;
+}
+.view-switch :deep(.v-label) {
+  font-size: 0.825rem;
+  color: #64748b;
+  opacity: 1;
+  margin-right: 8px;
+}
+
+/* --- ALWAYS-VISIBLE LEGEND STYLES --- */
+.legend-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-top: 4px;
+  margin-bottom: 20px;
+  padding: 0 4px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.legend-text {
+  font-size: 0.8rem;
+  color: #475569;
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.legend-dot.green {
+  background-color: #22c55e;
+}
+.legend-dot.yellow {
+  background-color: #f59e0b;
+}
+.legend-dot.blue {
+  background-color: #3b82f6;
+}
+
+
 .accordion-item + .accordion-item {
   border-top: 1px solid #eef2f6;
 }
@@ -294,6 +538,11 @@ const filteredRequests = computed(() => {
   align-items: center;
   gap: 10px;
 }
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
 .group-title {
   font-weight: 600;
   font-size: 1rem;
@@ -303,11 +552,6 @@ const filteredRequests = computed(() => {
   font-size: 0.875rem;
   color: #64748b;
   margin-top: 2px;
-}
-.tracking {
-  font-size: 0.875rem;
-  color: #2563eb;
-  font-weight: 500;
 }
 .caret {
   transition: transform 260ms ease;
@@ -330,7 +574,7 @@ const filteredRequests = computed(() => {
 .accordion-table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* makes all columns same width across tables */
+  table-layout: fixed;
 }
 
 .accordion-table th,
@@ -350,7 +594,6 @@ const filteredRequests = computed(() => {
   border-bottom: 1px solid #e5e7eb;
 }
 
-/* enforce consistent widths */
 .accordion-table th:nth-child(1),
 .accordion-table td:nth-child(1) {
   width: 25%;
@@ -365,5 +608,83 @@ const filteredRequests = computed(() => {
 .accordion-table td:nth-child(3) {
   width: 25%;
   text-align: right;
+}
+
+.status-pill {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgb(var(--v-theme-primary));
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.status-pill.green {
+  background-color: #22c55e;
+}
+.status-pill.yellow {
+  background-color: #f59e0b;
+}
+.status-pill.blue {
+  background-color: #3b82f6;
+}
+
+.main-table {
+    width: 100%;
+    border: 1px solid #eef2f6;
+    border-radius: 6px;
+    border-spacing: 0;
+}
+
+.main-table th {
+    background-color: #f9fafb;
+    color: #4b5563;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eef2f6;
+    font-size: 0.8rem;
+}
+
+.main-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eef2f6;
+    font-size: 0.875rem;
+    color: #334155;
+    vertical-align: middle;
+}
+
+.main-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.status-column-header {
+    width: 60px;
+}
+
+.main-table tbody .clickable-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.main-table tbody .clickable-row:hover {
+  background-color: #f9fafb;
+}
+
+@media (max-width: 768px) {
+  .controls-top-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-field,
+  .sort-dropdown {
+    max-width: 100% !important;
+  }
+  .legend-container {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
 }
 </style>

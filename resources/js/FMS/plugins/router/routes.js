@@ -13,6 +13,10 @@ export const routes = [
         component: () => import('@fms/pages/departments.vue'),
       },
       {
+        path: 'annual-budget',
+        component: () => import('@fms/pages/annual-budget.vue'),
+      },
+      {
         path: 'office-codes',
         component: () => import('@fms/pages/officecodes.vue'),
       },

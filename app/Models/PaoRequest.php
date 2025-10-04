@@ -14,6 +14,7 @@ class PaoRequest extends Model
 
     protected $fillable = [
         'office_code_id',
+        'office_code_budget_id', // ✅ Added
         'created_by',
         'updated_by',
         'deleted_by',
@@ -41,5 +42,13 @@ class PaoRequest extends Model
     public function groups()
     {
         return $this->hasMany(PaoGroup::class, 'request_id');
+    }
+
+    /**
+     * Office Code Budget relationship (Optional but recommended)
+     */
+    public function officeCodeBudget()
+    {
+        return $this->belongsTo(OfficeCodeBudget::class);
     }
 }

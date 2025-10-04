@@ -15,7 +15,8 @@ class StorePaoRequest extends FormRequest
     public function rules()
     {
         return [
-            'office_code_id' => 'required|exists:office_codes,id',  // updated
+            'office_code_id' => 'required|exists:office_codes,id',
+            'office_code_budget_id' => 'nullable|exists:office_code_budgets,id', // ✅ Added
             'created_by'     => 'required|exists:users,id',
             'groups'         => 'required|array|min:1',
             'groups.*.group_id' => 'required|exists:group_object_expenditures,id',
