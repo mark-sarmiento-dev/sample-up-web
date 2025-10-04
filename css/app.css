@@ -1,6 +1,4 @@
-@charset "UTF-8";
-.modal {
-  position: fixed;
+/*# sourceMappingURL=app.css.map */on: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -811,31 +809,6 @@ select:focus {
   }
 }
 
-.plantilla-add-position-modal .add-position-form-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-.plantilla-add-position-modal .form-section .input-wrapper {
-  margin-bottom: 10px;
-}
-.plantilla-add-position-modal .form-section .input-wrapper.span-2 {
-  grid-column: span 2;
-}
-.plantilla-add-position-modal .form-section .input-wrapper.span-3 {
-  grid-column: span 3;
-}
-.plantilla-add-position-modal .form-section .input-wrapper.span-4 {
-  grid-column: span 4;
-}
-.plantilla-add-position-modal label {
-  font-size: 12px;
-  font-weight: 600;
-  margin-bottom: 4px;
-  display: block;
-  color: #898989;
-}
-
 main.login-container {
   display: flex;
   height: 100vh;
@@ -1597,49 +1570,24 @@ main.login-container .toggle-password img {
   padding: 2px;
 }
 
-.plantilla-add-dept-modal .add-dept-form-grid {
+.grid .form-section .input-wrapper {
+  margin-bottom: 10px;
+}
+.grid .form-section .input-wrapper.span-2 {
+  grid-column: span 2;
+}
+.grid .form-section .input-wrapper.span-3 {
+  grid-column: span 3;
+}
+.grid .form-section .input-wrapper.span-4 {
+  grid-column: span 4;
+}
+.grid .form-section .form-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
-.plantilla-add-dept-modal .form-section .input-wrapper {
-  margin-bottom: 10px;
-}
-.plantilla-add-dept-modal .form-section .input-wrapper.span-2 {
-  grid-column: span 2;
-}
-.plantilla-add-dept-modal .form-section .input-wrapper.span-3 {
-  grid-column: span 3;
-}
-.plantilla-add-dept-modal .form-section .input-wrapper.span-4 {
-  grid-column: span 4;
-}
-.plantilla-add-dept-modal label {
-  font-size: 12px;
-  font-weight: 600;
-  margin-bottom: 4px;
-  display: block;
-  color: #898989;
-}
-
-.plantilla-add-div-modal .add-div-form-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-.plantilla-add-div-modal .form-section .input-wrapper {
-  margin-bottom: 10px;
-}
-.plantilla-add-div-modal .form-section .input-wrapper.span-2 {
-  grid-column: span 2;
-}
-.plantilla-add-div-modal .form-section .input-wrapper.span-3 {
-  grid-column: span 3;
-}
-.plantilla-add-div-modal .form-section .input-wrapper.span-4 {
-  grid-column: span 4;
-}
-.plantilla-add-div-modal label {
+.grid .form-section .form-grid label {
   font-size: 12px;
   font-weight: 600;
   margin-bottom: 4px;
