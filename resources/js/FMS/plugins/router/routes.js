@@ -25,8 +25,16 @@ export const routes = [
         component: () => import('@fms/pages/expenditures.vue'),
       },
       {
+        path: 'obr',
+        component: () => import('@fms/pages/obr.vue'),
+      },
+      {
         path: 'pao',
         component: () => import('@fms/pages/pao.vue'),
+      },
+      {
+        path: 'paper-trail-management',
+        component: () => import('@fms/pages/paper-trail-management.vue'),
       },
       {
         path: 'account-settings',

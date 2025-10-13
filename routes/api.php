@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\PaoRequestController;
 use App\Http\Controllers\Api\OfficeCodeController;
 use App\Http\Controllers\Api\AnnualBudgetController;
 use App\Http\Controllers\Api\OfficeCodeBudgetController;
+use App\Http\Controllers\Api\ObrRequestController;
+use App\Http\Controllers\Api\PaperTrailSetController;
 
 
 
@@ -38,6 +40,8 @@ Route::get('/office-code-budgets/by-office-code/{officeCodeId}', [OfficeCodeBudg
 // Annual Budget
 Route::middleware('auth:sanctum')->apiResource('annual-budgets', AnnualBudgetController::class);
 
+Route::middleware('auth:sanctum')->apiResource('obr-requests', ObrRequestController::class);
+
 // Annual Budget
 Route::middleware('auth:sanctum')->group(function () {
     // Route for getting budgets by a specific office code ID.
@@ -46,6 +50,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Standard resource routes for Office Code Budgets.
     Route::apiResource('office-code-budgets', OfficeCodeBudgetController::class);
 });
+
+Route::middleware('auth:sanctum')->apiResource('paper-trail-sets', PaperTrailSetController::class);
 // Office Codes
 Route::middleware('auth:sanctum')->apiResource('office-codes', OfficeCodeController::class);
 
@@ -59,6 +65,7 @@ Route::middleware('auth:sanctum')->apiResource('object-expenditures', ObjectExpe
 Route::prefix('pao-requests')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [PaoRequestController::class, 'store']);
     Route::get('/', [PaoRequestController::class, 'index']);
+    Route::get('/year/{year}', [PaoRequestController::class, 'getRequestsByYear']);
     Route::get('/{id}', [PaoRequestController::class, 'show']);
     Route::match(['PUT', 'PATCH'], '/{id}', [PaoRequestController::class, 'update']);
     Route::delete('/{id}', [PaoRequestController::class, 'destroy']); // delete full request

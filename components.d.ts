@@ -34,6 +34,7 @@ declare module 'vue' {
     Tooltip: typeof import('./resources/js/components/Common/Tooltip.vue')['default']
     TrainingAttended: typeof import('./resources/js/components/PDS/FormSections/TrainingAttended.vue')['default']
     VoluntaryInvolvement: typeof import('./resources/js/components/PDS/FormSections/VoluntaryInvolvement.vue')['default']
+    VueApexCharts: typeof import('vue3-apexcharts')['default']
     WorkExperience: typeof import('./resources/js/components/PDS/FormSections/WorkExperience.vue')['default']
   }
 }

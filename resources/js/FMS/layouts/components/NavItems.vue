@@ -68,7 +68,7 @@ onMounted(async () => {
       :item="{
         title: 'Obligation Requests',
         icon: greenBook,
-        href: '/login',
+        href: '/obr',
       }"
     />
 
@@ -104,7 +104,7 @@ onMounted(async () => {
       :item="{
         title: 'Paper Trail Management',
         icon: bookmarkTabs,
-        href: '/login',
+        href: '/paper-trail-management',
       }"
     />
   </template>

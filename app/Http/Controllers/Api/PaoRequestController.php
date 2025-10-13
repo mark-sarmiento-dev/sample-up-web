@@ -462,4 +462,78 @@ class PaoRequestController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    /** ---------------------------
+     * GET /api/pao-requests/year/{year}
+     * ---------------------------
+     * Retrieves PAO requests filtered by a specific budget year.
+     *
+     * @param int $year The 4-digit budget year.
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRequestsByYear($year)
+    {
+        // --- Step 1: Get all primary requests matching the year ---
+        $requests = DB::table('pao_requests')
+            ->join('office_codes', 'pao_requests.office_code_id', '=', 'office_codes.id')
+            ->join('office_code_budgets', 'pao_requests.office_code_budget_id', '=', 'office_code_budgets.id')
+            ->join('annual_budgets', 'office_code_budgets.annual_budget_id', '=', 'annual_budgets.id')
+            ->where('annual_budgets.year', $year)
+            ->select(
+                'pao_requests.id',
+                'office_codes.id as office_code_id',
+                'office_codes.description',
+                'office_code_budgets.budget',
+                'annual_budgets.year'
+            )
+            ->get();
+
+        if ($requests->isEmpty()) {
+            return response()->json([]);
+        }
+
+        // --- Step 2: Efficiently fetch all nested objects for the found requests ---
+        $requestIds = $requests->pluck('id');
+
+        $allObjects = DB::table('pao_objects')
+            ->join('object_expenditures', 'pao_objects.object_expenditure_id', '=', 'object_expenditures.id')
+            ->join('group_object_expenditures', 'object_expenditures.group_id', '=', 'group_object_expenditures.id')
+            ->whereIn('pao_objects.request_id', $requestIds)
+            ->select(
+                'pao_objects.request_id',
+                'pao_objects.amount', // ✅ MODIFIED: Select the specific amount for each object
+                'object_expenditures.id',
+                'object_expenditures.object_expenditure',
+                'object_expenditures.account_code',
+                'object_expenditures.group_id',
+                'group_object_expenditures.group_name'
+            )
+            ->get()
+            ->groupBy('request_id');
+
+        // --- Step 3: Combine the requests with their nested objects ---
+        $data = $requests->map(function ($request) use ($allObjects) {
+            $objectsForRequest = $allObjects->get($request->id, collect());
+
+            return [
+                'id' => $request->id,
+                'office_code_id' => $request->office_code_id,
+                'description' => $request->description,
+                'budget' => $request->budget,
+                'year' => $request->year,
+                'objects' => $objectsForRequest->map(function ($object) {
+                    return [
+                        'id' => $object->id,
+                        'object_expenditure' => $object->object_expenditure,
+                        'account_code' => $object->account_code,
+                        'group_id' => $object->group_id,
+                        'group_name' => $object->group_name,
+                        'amount' => $object->amount, // ✅ MODIFIED: Use the object's specific amount
+                    ];
+                }),
+            ];
+        });
+
+        return response()->json($data);
+    }
 }

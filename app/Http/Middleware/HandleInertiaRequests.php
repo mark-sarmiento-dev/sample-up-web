@@ -36,6 +36,7 @@ class HandleInertiaRequests extends Middleware
                     'name'    => $request->user()->name,
                     'gsis_id' => $request->user()->gsis_id,
                     'email'   => $request->user()->email, // useful for notifications or profile
+                    'department' => $request->user()->gsis_id,
                     // Add only safe-to-share fields
                 ] : null,
             ],
