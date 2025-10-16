@@ -28,14 +28,9 @@ class StorePaperTrailSetRequest extends FormRequest
         return [
             'set_no' => [
                 // For 'update' (PUT/PATCH), set_no is required and must be unique, ignoring itself.
-                Rule::when($this->isMethod('PUT') || $this->isMethod('PATCH'), [
-                    'required',
-                    'integer',
-                    Rule::unique('sets', 'set_no')->ignore($paperTrailSet ? $paperTrailSet->id : null)
-                ]),
-                // For 'create' (POST), the client is forbidden from sending a set_no.
                 Rule::when($this->isMethod('POST'), [
-                    'prohibited'
+                    'required',
+                    'integer'
                 ])
             ],
             'office_code' => ['required', 'string', 'max:255'],

@@ -1,7 +1,6 @@
 <script setup>
-import PaperTrailList from '@fms/views/pages/paper-trail-management/PaperTrailSet.vue'
-// Icon alias - make sure the path to your icon is correct
-import paperTrailIcon from '@/../icons/green_book_3d.png'; 
+import PaperTrailList from '@fms/views/pages/paper-trail-management/PaperTrailSet.vue' 
+import bookmarkTabs from '@/../icons/bookmark_tabs_3d.png';
 </script>
 
 <template>
@@ -12,7 +11,7 @@ import paperTrailIcon from '@/../icons/green_book_3d.png';
           <div class="d-flex justify-space-between align-center">
             <div class="d-flex align-center">
               <img
-                :src="paperTrailIcon"
+                :src="bookmarkTabs"
                 alt="Paper Trail Icon"
                 class="me-3"
                 style="width: 28px; height: 28px;"
