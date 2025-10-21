@@ -10,64 +10,67 @@ import svgLoader from 'vite-svg-loader'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '', // Keep this line from our previous fix
   plugins: [
-  // Laravel integration
-  laravel({
-    input: [
-      'resources/css/app.scss',
-      'resources/js/app.js',
-      'resources/js/FMS/main.js',
-    ],
-    refresh: true,
-  }),
+    // Laravel integration
+    laravel({
+      input: [
+        'resources/css/app.scss',
+        'resources/js/app.js',
+        'resources/js/FMS/main.js',
+      ],
+      refresh: true,
+    }),
 
-  // Vue 3 plugin
-  vue({
-    template: {
-      transformAssetUrls: {
-        base: null,
-        includeAbsolute: false,
+    // Vue 3 plugin
+    vue({
+      template: {
+        transformAssetUrls: {
+          base: null,
+          includeAbsolute: false,
+        },
       },
-    },
-  }),
+    }),
 
-  // Vue JSX support
-  vueJsx(),
+    // Vue JSX support
+    vueJsx(),
 
-  // Vuetify plugin
-  vuetify({
-    styles: {
-      configFile: 'resources/styles/variables/_vuetify.scss',
-    },
-  }),
-
-  // Auto-register components
-  Components({
-    dirs: ['resources/js/FMS/@core/components', 'resources/js/components'],
-    dts: true,
-    resolvers: [
-      componentName => {
-        // Auto import `VueApexCharts`
-        if (componentName === 'VueApexCharts')
-          return { name: 'default', from: 'vue3-apexcharts', as: 'VueApexCharts' }
+    // Vuetify plugin
+    vuetify({
+      styles: {
+        configFile: 'resources/styles/variables/_vuetify.scss',
       },
-    ],
-  }),
+    }),
 
-  // Auto-import commonly used packages
-  AutoImport({
-    imports: ['vue', 'vue-router', '@vueuse/core', '@vueuse/math', 'pinia'],
-    vueTemplate: true,
-    ignore: ['useCookies', 'useStorage'],
-    eslintrc: {
-      enabled: true,
-      filepath: './.eslintrc-auto-import.json',
-    },
-  }),
+    // Auto-register components
+    Components({
+      // === THIS IS THE FIX ===
+      dirs: ['resources/js/FMS/@core/components', 'resources/js/Components'],
+      // =======================
+      dts: true,
+      resolvers: [
+        componentName => {
+          // Auto import `VueApexCharts`
+          if (componentName === 'VueApexCharts')
+            return { name: 'default', from: 'vue3-apexcharts', as: 'VueApexCharts' }
+        },
+      ],
+    }),
 
-  // SVG loader for inline SVGs
-  svgLoader(),
-],
+    // Auto-import commonly used packages
+    AutoImport({
+      imports: ['vue', 'vue-router', '@vueuse/core', '@vueuse/math', 'pinia'],
+      vueTemplate: true,
+      ignore: ['useCookies', 'useStorage'],
+      eslintrc: {
+        enabled: true,
+        filepath: './.eslintrc-auto-import.json',
+      },
+    }),
+
+    // SVG loader for inline SVGs
+    svgLoader(),
+  ],
   define: { 'process.env': {} },
   resolve: {
     alias: {
