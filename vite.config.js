@@ -44,9 +44,9 @@ export default defineConfig({
 
     // Auto-register components
     Components({
-      // === THIS IS THE FIX ===
-      dirs: ['resources/js/FMS/@core/components', 'resources/js/Components'],
-      // =======================
+      // === THIS MUST MATCH YOUR RENAMED FOLDER ===
+      dirs: ['resources/js/FMS/@core/components', 'resources/js/Components'], // <-- UPPERCASE 'C'
+      // ===========================================
       dts: true,
       resolvers: [
         componentName => {
