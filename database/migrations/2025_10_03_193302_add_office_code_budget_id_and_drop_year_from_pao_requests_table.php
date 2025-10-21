@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Step 1: Add the new foreign key column
+
         Schema::table('pao_requests', function (Blueprint $table) {
             $table->foreignId('office_code_budget_id')->nullable()->after('office_code_id')->constrained('office_code_budgets')->onDelete('set null');
         });
@@ -24,7 +24,6 @@ return new class extends Migration
     public function down(): void
     {
  
-        // Step 2: Drop the foreign key and column that were added
         Schema::table('pao_requests', function (Blueprint $table) {
             $table->dropForeign(['office_code_budget_id']);
             $table->dropColumn('office_code_budget_id');

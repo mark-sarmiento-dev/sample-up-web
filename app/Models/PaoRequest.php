@@ -52,13 +52,5 @@ class PaoRequest extends Model
         return $this->belongsTo(OfficeCodeBudget::class);
     }
 
-    /**
-     * Get the office code that this PAO request belongs to.
-     */
-    public function officeCode()
-    {
-        // This defines the "belongsTo" relationship.
-        // It assumes your 'pao_requests' table has an 'office_code_id' column.
-        return $this->belongsTo(OfficeCode::class, 'office_code_id');
-    }
+    
 }
