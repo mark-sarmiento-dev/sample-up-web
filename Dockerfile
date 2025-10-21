@@ -20,4 +20,4 @@ RUN rm /tmp/composer-setup.php
 COPY . .
 
 # Run the deploy script
-RUN /var/www/html/scripts/deploy.sh
+RUN scripts/deploy.sh
