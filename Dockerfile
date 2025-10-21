@@ -19,5 +19,9 @@ RUN rm /tmp/composer-setup.php
 # Copy in application code
 COPY . .
 
+# === ADD THIS LINE TO MAKE THE SCRIPT EXECUTABLE ===
+RUN chmod +x scripts/deploy.sh
+# ===================================================
+
 # Run the deploy script
 RUN scripts/deploy.sh
