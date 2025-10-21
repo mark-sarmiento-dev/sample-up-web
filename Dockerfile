@@ -1,4 +1,4 @@
-FROM richarvey/nginx-php-fpm:3.1.0-liveterm
+FROM richarvey/nginx-php-fpm:latest
 
 # Set the webroot
 ENV WEBROOT /var/www/html/public
